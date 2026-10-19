@@ -367,7 +367,20 @@
       .count-progress {margin-top:13px}
       .bottombar {min-height:15px}
     }
-  </style>
+  
+    /* Configurable countdown target in settings */
+    .target-time-section {margin-top:25px}
+    .target-time-controls {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+    .target-time-field {min-width:0;display:flex;flex-direction:column;gap:8px}
+    .target-time-field > span {font-size:10px;color:var(--muted);font-weight:700;text-align:center;direction:rtl}
+    .target-time-field select {display:block;width:100%;min-width:0;height:52px;padding:0 6px;text-align:center;text-align-last:center;border:1px solid rgba(255,255,255,.13);border-radius:13px;color:var(--white);background:rgba(255,255,255,.05);appearance:none;-webkit-appearance:none;font:700 19px 'Space Grotesk',sans-serif;font-variant-numeric:tabular-nums;cursor:pointer;transition:border-color .2s,background .2s}
+    .target-time-field select:hover {border-color:color-mix(in srgb,var(--accent) 55%,transparent);background:var(--soft)}
+    .target-time-field select:focus-visible {outline:2px solid var(--accent);outline-offset:3px}
+    .target-time-field select option {color:#edf5f3;background:#162125}
+    .target-time-caption {display:flex;align-items:center;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:13px;font-size:10px;font-weight:700;color:var(--muted)}
+    .target-time-caption strong {font:700 12px 'Space Grotesk',sans-serif;letter-spacing:.03em;color:var(--accent)}
+    @media (max-width:360px) {.target-time-controls {gap:6px}.target-time-field select {font-size:17px;height:47px}}
+</style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icon-192.png">
 <meta name="application-name" content="Moment · ChatGPT">
@@ -415,7 +428,7 @@
         <div class="dhikr-foot"><span class="dhikr-no" id="dhikrPosition">01 / 10</span><div class="change-track"><div class="change-fill running" id="dhikrProgress"></div></div></div>
       </section>
 
-      <section class="count-section" aria-label="الوقت المتبقي حتى الساعة الخامسة مساء">
+      <section class="count-section" aria-label="الوقت المتبقي حتى الوقت المحدد">
         <div class="count-main">
           <div class="count-copy">
             <div class="count-label" id="countLabel">المتبقي حتى 05:00 مساء</div>
@@ -424,7 +437,7 @@
           </div>
           <div class="target-ring" aria-hidden="true">
             <svg viewBox="0 0 72 72"><circle class="ring-background" cx="36" cy="36" r="32"/><circle class="ring-progress" id="ringProgress" cx="36" cy="36" r="32"/></svg>
-            <div class="ring-text"><strong>05</strong><span>PM</span></div>
+            <div class="ring-text"><strong id="targetRingHour">05</strong><span id="targetRingPeriod">PM</span></div>
           </div>
         </div>
         <div class="count-progress" aria-hidden="true"><div class="count-progress-bar" id="countProgress"></div></div>
@@ -470,6 +483,15 @@
     </section>
 
     <section><div class="section-title"><span>حجم الساعة</span><span class="section-note">SCALE</span></div><div class="range-line"><input id="digitScale" type="range" min="80" max="115" step="1" value="100" aria-label="حجم ارقام الساعة"><span id="scaleValue" class="range-amount">100%</span></div></section>
+    <section class="target-time-section">
+      <div class="section-title"><span>وقت العد التنازلي</span><span class="section-note">TARGET TIME</span></div>
+      <div class="target-time-controls" dir="ltr">
+        <label class="target-time-field"><span>الساعة</span><select id="targetHourSelect" aria-label="ساعة العد التنازلي"></select></label>
+        <label class="target-time-field"><span>الدقائق</span><select id="targetMinuteSelect" aria-label="دقائق العد التنازلي"></select></label>
+        <label class="target-time-field"><span>الفترة</span><select id="targetPeriodSelect" aria-label="صباحا أم مساء"><option value="AM">AM</option><option value="PM">PM</option></select></label>
+      </div>
+      <div class="target-time-caption">الوقت المحدد <strong id="targetTimePreview" dir="ltr">05:00 PM</strong><span>— محفوظ تلقائيا</span></div>
+    </section>
     <section><div class="section-title"><span>تغيير الذكر كل</span><span class="section-note">INTERVAL</span></div><div class="choice-grid" id="intervalPicker"><button class="choice" data-interval="8" aria-pressed="false">8s</button><button class="choice selected" data-interval="12" aria-pressed="true">12s</button><button class="choice" data-interval="20" aria-pressed="false">20s</button><button class="choice" data-interval="30" aria-pressed="false">30s</button></div></section>
     <section>
       <div class="setting-row"><div><div class="setting-name">نظام 24 ساعة</div><div class="setting-hint">اعرض الوقت بصيغة 24 بدلا من AM / PM</div></div><button class="toggle" id="formatToggle" role="switch" aria-label="نظام 24 ساعة" aria-checked="false"></button></div>
@@ -496,7 +518,7 @@
         `اللهم صل وسلم على نبينا محمد`,
         `حسبي الله ونعم الوكيل`
       ];
-      const defaults = { face: `dynamic`, font: `outfit`, theme: `aurora`, scale: 100, interval: 12, format24: false, quiet: false };
+      const defaults = { face: `dynamic`, font: `outfit`, theme: `aurora`, scale: 100, interval: 12, format24: false, quiet: false, targetHour: 17, targetMinute: 0 };
       const storageKey = `moment-watch-dhikr-v1`;
       const $ = (id) => document.getElementById(id);
       const allowed = {
@@ -512,6 +534,8 @@
       if (Number.isFinite(Number(saved.scale))) pref.scale = Math.min(115, Math.max(80, Math.round(Number(saved.scale))));
       pref.format24 = saved.format24 === true;
       pref.quiet = saved.quiet === true;
+      if (Number.isInteger(saved.targetHour) && saved.targetHour >= 0 && saved.targetHour <= 23) pref.targetHour = saved.targetHour;
+      if (Number.isInteger(saved.targetMinute) && saved.targetMinute >= 0 && saved.targetMinute <= 59) pref.targetMinute = saved.targetMinute;
       const save = () => { try { localStorage.setItem(storageKey, JSON.stringify(pref)); } catch (_) {} };
       const pad = (number) => String(number).padStart(2, `0`);
       const reducedMotion = matchMedia(`(prefers-reduced-motion: reduce)`);
@@ -569,18 +593,29 @@
         $(`timeDisplay`).setAttribute(`aria-label`, `الوقت ${htext}:${mtext}:${stext} ${pref.format24 ? `` : h < 12 ? `صباحا` : `مساء`}`);
 
         const target = new Date(now);
-        target.setHours(17, 0, 0, 0);
+        target.setHours(pref.targetHour, pref.targetMinute, 0, 0);
         const remaining = Math.max(0, Math.ceil((target.getTime() - now.getTime()) / 1000));
         const hh = Math.floor(remaining / 3600);
         const mm = Math.floor((remaining % 3600) / 60);
         const ss = remaining % 60;
         $(`countValue`).textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
         const isDone = remaining === 0;
-        $(`countLabel`).textContent = isDone ? `وصلنا الساعة 05:00 مساء` : `المتبقي حتى 05:00 مساء`;
+        const targetDisplayHour = pref.targetHour % 12 || 12;
+        const targetPeriod = pref.targetHour >= 12 ? `PM` : `AM`;
+        const targetText = `${pad(targetDisplayHour)}:${pad(pref.targetMinute)}`;
+        const targetArabicPeriod = targetPeriod === `PM` ? `مساء` : `صباحا`;
+        $(`countLabel`).textContent = isDone
+          ? `وصلنا الساعة ${targetText} ${targetArabicPeriod}`
+          : `المتبقي حتى ${targetText} ${targetArabicPeriod}`;
         $(`countSub`).textContent = isDone ? `انتهى العد التنازلي لليوم` : `ساعات : دقائق : ثواني`;
+        $(`targetRingHour`).textContent = pad(targetDisplayHour);
+        $(`targetRingPeriod`).textContent = targetPeriod;
         const start = new Date(now);
         start.setHours(0,0,0,0);
-        const progress = Math.min(1, Math.max(0, (now.getTime() - start.getTime()) / (target.getTime() - start.getTime())));
+        const totalDuration = target.getTime() - start.getTime();
+        const progress = totalDuration > 0
+          ? Math.min(1, Math.max(0, (now.getTime() - start.getTime()) / totalDuration))
+          : 1;
         $(`ringProgress`).style.strokeDashoffset = String(201.06 * (1 - progress));
         $(`countProgress`).style.width = `${progress * 100}%`;
       }
@@ -626,6 +661,33 @@
           btn.setAttribute(`aria-pressed`, String(selected));
         });
       }
+      function populateTargetTimeOptions() {
+        const hours = $(`targetHourSelect`);
+        const minutes = $(`targetMinuteSelect`);
+        for (let hour = 1; hour <= 12; hour++) {
+          const option = document.createElement(`option`);
+          option.value = pad(hour);
+          option.textContent = pad(hour);
+          hours.appendChild(option);
+        }
+        for (let minute = 0; minute < 60; minute++) {
+          const option = document.createElement(`option`);
+          option.value = pad(minute);
+          option.textContent = pad(minute);
+          minutes.appendChild(option);
+        }
+      }
+      function changeTargetTime() {
+        const hour = Number($(`targetHourSelect`).value);
+        const minute = Number($(`targetMinuteSelect`).value);
+        const period = $(`targetPeriodSelect`).value;
+        if (!Number.isInteger(hour) || hour < 1 || hour > 12 ||
+            !Number.isInteger(minute) || minute < 0 || minute > 59 ||
+            ![`AM`, `PM`].includes(period)) return;
+        pref.targetHour = hour % 12 + (period === `PM` ? 12 : 0);
+        pref.targetMinute = minute;
+        reflect();
+      }
       function reflect() {
         document.body.dataset.face = pref.face;
         document.body.dataset.font = pref.font;
@@ -634,6 +696,12 @@
         document.documentElement.style.setProperty(`--digit-scale`, String(pref.scale / 100));
         $(`digitScale`).value = String(pref.scale);
         $(`scaleValue`).textContent = `${pref.scale}%`;
+        const targetHour12 = pref.targetHour % 12 || 12;
+        const targetPeriod = pref.targetHour >= 12 ? `PM` : `AM`;
+        $(`targetHourSelect`).value = pad(targetHour12);
+        $(`targetMinuteSelect`).value = pad(pref.targetMinute);
+        $(`targetPeriodSelect`).value = targetPeriod;
+        $(`targetTimePreview`).textContent = `${pad(targetHour12)}:${pad(pref.targetMinute)} ${targetPeriod}`;
         markChoices(`[data-face-choice]`, `faceChoice`, pref.face);
         markChoices(`[data-font-choice]`, `fontChoice`, pref.font);
         markChoices(`[data-theme-choice]`, `themeChoice`, pref.theme);
@@ -705,6 +773,9 @@
         }
       }
 
+      for (const id of [`targetHourSelect`, `targetMinuteSelect`, `targetPeriodSelect`]) {
+        $(id).addEventListener(`change`, changeTargetTime);
+      }
       document.querySelectorAll(`[data-face-choice]`).forEach(b => b.addEventListener(`click`, () => {pref.face=b.dataset.faceChoice;reflect();}));
       document.querySelectorAll(`[data-font-choice]`).forEach(b => b.addEventListener(`click`, () => {pref.font=b.dataset.fontChoice;reflect();}));
       document.querySelectorAll(`[data-theme-choice]`).forEach(b => b.addEventListener(`click`, () => {pref.theme=b.dataset.themeChoice;reflect();}));
@@ -735,6 +806,7 @@
         if (!document.hidden) {updateTime();if (wakeRequested && !wakeLock) await requestWake();}
       });
       window.addEventListener(`pageshow`,updateTime);
+      populateTargetTimeOptions();
       reflect();
       runClock();
       scheduleDhikr();
