@@ -1,13 +1,13 @@
 {
-  "id": "./",
-  "name": "Moment Watch · ChatGPT",
-  "short_name": "Moment ChatGPT",
-  "description": "Always-on clock and dhikr — ChatGPT edition",
+  "id": "/Clock/",
+  "name": "Clock — الوقت والذكر",
+  "short_name": "Clock",
+  "description": "ساعة وأذكار مع أربع واجهات قابلة للتبديل، عد تنازلي، ونسبة الدوام المتبقية",
   "start_url": "./",
   "scope": "./",
   "display": "fullscreen",
-  "background_color": "#071514",
-  "theme_color": "#071514",
+  "background_color": "#050c10",
+  "theme_color": "#071012",
   "lang": "ar",
   "dir": "rtl",
   "icons": [
@@ -21,7 +21,7 @@
       "src": "./icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }

@@ -1,107 +1,461 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#070c11">
-<meta name="color-scheme" content="dark">
-<meta name="description" content="Moment Watch — استكشف تصاميم الساعة والأذكار المستقلة من ChatGPT وClaude وDeepSeek وGemini وManus">
-<title>Moment Watch — The Collection</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#070c11;--card:#10191e;--teal:#099999;--ink:#eaf5f5;--muted:#90a3ab;color-scheme:dark;font-synthesis:none}
-*,*:before,*:after{box-sizing:border-box}
-html{background:var(--bg)}
-body{margin:0;min-height:100vh;overflow-x:hidden;font-family:"Almarai",Tahoma,sans-serif;color:var(--ink);background:radial-gradient(ellipse 65% 30% at 50% -12%,rgba(9,153,153,.23),transparent 90%),var(--bg)}
-body:before{content:"";inset:0;position:fixed;pointer-events:none;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:54px 54px;opacity:.014;mask-image:linear-gradient(#000,transparent 80%)}
-a{color:inherit;text-decoration:none}
-a:focus-visible{outline:2px solid #6ae6d9;outline-offset:3px}
-.layout{position:relative;margin:0 auto;width:min(1100px,calc(100% - 36px));padding:25px 0 40px}
-header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.brand{font:900 23px "Outfit",sans-serif;direction:ltr;letter-spacing:-1px;display:inline-flex;gap:10px;align-items:center}
-.logo{width:27px;height:27px;display:block;border:7px solid #099999;border-top-color:#adfff5;border-radius:50%;box-shadow:0 0 24px #09999955}
-header small{direction:ltr;font:700 10px "Space Grotesk",sans-serif;color:#748b95;letter-spacing:2px;text-align:left}
-.hero{text-align:center;padding:88px 0 63px}
-.kicker{display:inline-flex;gap:9px;align-items:center;border:1px solid #09999955;padding:10px 14px;border-radius:100px;background:#09999912;font:700 10px "Space Grotesk",sans-serif;color:#9aede4;letter-spacing:2px;direction:ltr}
-.kicker:before{content:"";width:6px;height:6px;border-radius:50%;background:#21e2d5;box-shadow:0 0 10px #21e2d5;animation:blink 2.4s infinite}
-h1{font-size:clamp(38px,6vw,75px);line-height:1.28;letter-spacing:-2.5px;margin:22px 0 14px;font-weight:800}
-h1 span{background:linear-gradient(120deg,#abf8f0,#099999);-webkit-background-clip:text;background-clip:text;color:transparent}
-.subtitle{font-size:14px;color:#a1b2ba;line-height:2.1;margin:0}
-.metrics{display:flex;justify-content:center;align-items:center;gap:16px;direction:ltr;margin-top:29px}
-.metric{display:flex;align-items:baseline;gap:7px;color:#83969e;font:700 10px "Space Grotesk",sans-serif;letter-spacing:1px}
-.metric b{font-size:17px;color:#d9eeed}.sep{height:3px;width:3px;border-radius:50%;background:#57727d}
-.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:20px}
-.sectionhead h2{font-size:20px;margin:0 0 7px}.sectionhead p{color:#8599a1;font-size:11px;line-height:1.8;margin:0}
-.sectionhead label{font:700 11px "Space Grotesk",sans-serif;color:#8da3ab;direction:ltr}
-.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
-.card{--accent:#099999;position:relative;display:flex;flex-direction:column;min-height:285px;overflow:hidden;border-radius:25px;border:1px solid rgba(255,255,255,.085);background:linear-gradient(138deg,rgba(255,255,255,.053),rgba(255,255,255,.006) 60%),var(--card);transition:transform .3s,border-color .3s,box-shadow .3s}
-.card:not(.coming):hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--accent),transparent 35%);box-shadow:0 15px 55px #0009}
-.art{position:relative;min-height:167px;flex:1;display:grid;place-items:center;background:radial-gradient(ellipse 55% 90% at 50% 110%,color-mix(in srgb,var(--accent),transparent 76%),transparent)}
-.art:before{content:"";position:absolute;width:160px;height:160px;border:1px solid color-mix(in srgb,var(--accent),transparent 70%);border-radius:50%;box-shadow:0 0 0 24px #ffffff03,0 0 0 46px #ffffff02;animation:float 7s ease-in-out infinite}
-.time{position:relative;font:800 49px "Outfit",sans-serif;letter-spacing:-2px;direction:ltr;font-variant-numeric:tabular-nums;text-shadow:0 0 24px color-mix(in srgb,var(--accent),transparent 45%)}
-.card:nth-child(2) .time{font-weight:400;letter-spacing:1px}
-.card:nth-child(3) .time{font:700 47px "Space Grotesk",sans-serif;color:#ffe0ae}
-.card:nth-child(4) .time{font-weight:700}
-.card:nth-child(5) .time{font-weight:500}
-.seconds{position:absolute;left:15px;bottom:14px;font:700 10px "Space Grotesk",sans-serif;letter-spacing:2px;color:var(--accent);direction:ltr}
-.content{padding:17px 21px 23px;border-top:1px solid #ffffff0d}
-.nameLine{display:flex;align-items:center;justify-content:space-between;gap:5px}
-.cardName{font:800 23px "Outfit",sans-serif;letter-spacing:-.6px;direction:ltr;margin:0}
-.tag{font:700 9px "Space Grotesk",sans-serif;letter-spacing:1.2px;color:var(--accent);direction:ltr}
-.content p{font-size:11px;color:#879aa4;line-height:1.85;margin:8px 0 0}
-.arrow{position:absolute;top:15px;left:16px;display:grid;place-items:center;width:29px;height:29px;border:1px solid rgba(255,255,255,.18);border-radius:50%;font:19px "Outfit",sans-serif;color:#b8d1d0}
-.coming{opacity:.58;cursor:default;border-style:dashed}
-.coming .art:before{border-style:dashed;box-shadow:none;animation:none}
-.coming .time{color:#71828a}
-footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid #ffffff12;margin-top:36px;padding-top:21px;color:#667d87;font:600 11px "Space Grotesk",sans-serif;direction:ltr}
-footer span:last-child{font:400 11px Almarai,sans-serif;direction:rtl}
-@keyframes float{50%{transform:scale(1.05);opacity:.65}}@keyframes blink{50%{opacity:.32}}
-@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:540px){.layout{width:min(100% - 28px,470px);padding-top:19px}.brand{font-size:21px}header small{font-size:9px}.hero{padding:68px 0 48px}h1{font-size:43px;letter-spacing:-1.4px}.subtitle{font-size:12px}.metrics{gap:10px}.metric{font-size:9px}.metric b{font-size:15px}.grid{grid-template-columns:1fr;gap:12px}.card{flex-direction:row-reverse;min-height:121px;border-radius:18px}.art{min-height:121px;flex:0 0 41%}.art:before{width:105px;height:105px;box-shadow:0 0 0 18px #ffffff03}.time{font-size:33px!important;letter-spacing:-1px!important}.seconds{font-size:8px;bottom:9px;left:9px}.content{border:0;min-width:0;flex:1;display:flex;flex-direction:column;justify-content:center;padding:15px 11px}.cardName{font-size:20px}.tag{font-size:8px}.content p{font-size:10px}.arrow{width:22px;height:22px;left:9px;top:9px;font-size:15px}.sectionhead h2{font-size:17px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#071012">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Clock — ساعة وأذكار، أربع واجهات متكاملة، عد تنازلي ونسبة ساعات الدوام المتبقية">
+  <title>Clock — الوقت والذكر</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Amiri:wght@400;700&family=Bebas+Neue&family=Cairo:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@400;500;600;700;900&family=Outfit:wght@300;400;500;600;700;800;900&family=Rajdhani:wght@500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" sizes="192x192" href="./icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="./icon-192.png">
+  <style>
+:root{--accent:#82e1d2;--accent-bright:#a8fff1;--accent-dim:#087c78;--soft:rgba(9,153,153,.15);--glow:rgba(9,153,153,.16);--bg:#050b0e;--surface:rgba(18,29,34,.65);--stroke:rgba(211,244,242,.095);--ink:#edf6f7;--muted:#8da2a7;--font:'Outfit',sans-serif;--arabic:'Almarai',Tahoma,sans-serif;color-scheme:dark}
+*{box-sizing:border-box}html,body{width:100%;min-height:100%;margin:0}html{background:#050b0e;overscroll-behavior:none}body{font-family:var(--arabic);color:var(--ink);background:var(--bg);overflow:hidden;transition:background .6s ease;-webkit-tap-highlight-color:transparent}button,input,select{font:inherit}button{cursor:pointer;color:inherit}button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:3px}button:disabled{cursor:not-allowed}::selection{background:var(--accent);color:#071215}
+body[data-font=outfit]{--font:'Outfit',sans-serif}body[data-font=space]{--font:'Space Grotesk',sans-serif}body[data-font=manrope]{--font:'Manrope',sans-serif}body[data-font=orbitron]{--font:'Orbitron',sans-serif}body[data-font=rajdhani]{--font:'Rajdhani',sans-serif}body[data-font=mono]{--font:'IBM Plex Mono',monospace}
+body[data-style=chatgpt]{--accent:#82e1d2;--accent-bright:#a8fff1;--accent-dim:#12887f;--soft:rgba(9,153,153,.14);--glow:rgba(11,174,165,.19);--bg:#050c10;--surface:rgba(14,29,35,.61)}
+body[data-style=claude]{--accent:#a78bfa;--accent-bright:#87e6fd;--accent-dim:#7c5fc5;--soft:rgba(141,113,226,.13);--glow:rgba(152,125,229,.19);--bg:#080912;--surface:rgba(24,21,39,.68)}
+body[data-style=deepseek]{--accent:#eac67e;--accent-bright:#ffe8b4;--accent-dim:#9b7537;--soft:rgba(225,179,93,.11);--glow:rgba(228,182,102,.14);--bg:#090906;--surface:rgba(28,24,17,.63)}
+body[data-style=manus]{--accent:#86e8e6;--accent-bright:#d5c9ff;--accent-dim:#856be1;--soft:rgba(153,125,231,.10);--glow:rgba(130,198,225,.12);--bg:#080a12;--surface:rgba(21,24,37,.62)}
+.ambient,.noise{position:fixed;inset:0;pointer-events:none}.ambient{z-index:0;opacity:.72;filter:blur(38px)}.ambient-one{background:radial-gradient(ellipse 50% 48% at 24% 75%,var(--glow),transparent 85%);animation:drift 25s ease-in-out infinite alternate}.ambient-two{background:radial-gradient(ellipse 45% 42% at 80% 18%,var(--soft),transparent 88%);animation:driftBack 28s ease-in-out infinite alternate}.noise{z-index:1;opacity:.1;background-image:radial-gradient(#c5e9ec .4px,transparent .6px);background-size:6px 6px;mask-image:linear-gradient(to bottom,transparent,#000 35%,#000 76%,transparent)}
+.app{z-index:2;position:relative;isolation:isolate;width:100%;height:100vh;height:100dvh;min-height:380px;max-width:1800px;padding:clamp(18px,2.4vh,35px) clamp(19px,3.5vw,68px) clamp(10px,1.8vh,22px);margin:0 auto;display:flex;flex-direction:column;gap:0;overflow:hidden}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:53px;flex:none;position:relative}.brand{display:flex;align-items:center;gap:12px}.brand-icon{width:39px;height:39px;display:grid;place-items:center;border:1px solid color-mix(in srgb,var(--accent) 43%,transparent);border-radius:13px;background:var(--soft)}.brand-icon svg{width:23px;height:23px;fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round}.brand-type{display:flex;flex-direction:column;gap:5px}.brand-type strong{font:900 14px 'Outfit',sans-serif;letter-spacing:.22em;direction:ltr}.brand-point{color:var(--accent)}.today{font-size:10px;font-weight:700;color:var(--muted)}.header-center{position:absolute;left:50%;transform:translateX(-50%);direction:ltr;display:flex;align-items:center;gap:9px;letter-spacing:.2em;font:700 10px 'Space Grotesk',sans-serif;color:var(--muted);white-space:nowrap}.pulse-dot,.live-led{width:6px;height:6px;flex:none;border-radius:50%;background:var(--accent);box-shadow:0 0 13px var(--accent);animation:blink 3s ease-in-out infinite}.top-actions{display:flex;direction:ltr;gap:9px}.icon-action{display:grid;place-items:center;border-radius:13px;width:41px;height:41px;border:1px solid var(--stroke);background:rgba(255,255,255,.035);backdrop-filter:blur(14px);transition:background .25s,border-color .25s,transform .25s}.icon-action svg{height:18px;width:18px;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;fill:none}.icon-action:hover{border-color:var(--accent);background:var(--soft)}.icon-action:active{transform:scale(.94)}
+.watch{direction:ltr;flex:1;min-height:0;width:100%;display:grid;gap:clamp(13px,1.5vw,24px);padding:clamp(14px,2vh,25px) 0;transition:opacity .26s ease,transform .32s ease}.watch.changing{opacity:0;transform:scale(.986)}.watch>section{min-height:0;min-width:0;position:relative;overflow:hidden;border:1px solid var(--stroke);background:linear-gradient(141deg,rgba(255,255,255,.044),rgba(255,255,255,.012) 55%,var(--soft)),var(--surface);box-shadow:0 15px 55px rgba(0,0,0,.09),inset 0 1px rgba(255,255,255,.03);border-radius:clamp(22px,2.4vw,36px);direction:rtl}
+.clock-panel{display:flex;align-items:center;justify-content:center;isolation:isolate}.clock-panel::before{content:"";position:absolute;inset:auto 15% 0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);opacity:.42;box-shadow:0 0 29px var(--accent)}.clock-ornament{position:absolute;inset:0;pointer-events:none;display:grid;place-items:center}.orb-ring{position:absolute;width:min(74%,62vh);height:auto;aspect-ratio:1;opacity:0;overflow:visible;filter:drop-shadow(0 0 20px var(--glow))}.orb-ring circle{fill:none;stroke-width:2;transform-origin:center;transform:rotate(-90deg)}.ring-track{stroke:rgba(255,255,255,.08)}.ring-glow{stroke:var(--accent);stroke-width:8!important;opacity:.07;stroke-dasharray:630 900;animation:spinRing 40s linear infinite}.ring-moving{stroke:url(#ringGradient);stroke-linecap:round;stroke-width:3!important;stroke-dasharray:540 911;animation:spinRing 40s linear infinite}.clock-halo{position:absolute;width:65%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 70%);opacity:.65;animation:pulseGlow 8s ease-in-out infinite}.clock-content{z-index:1;display:flex;flex-direction:column;justify-content:center;align-items:center;width:100%;height:100%;min-height:0;position:relative;gap:clamp(13px,3vh,32px);padding:clamp(22px,4vh,45px) clamp(15px,2vw,32px);transform:translate(var(--burn-x,0px),var(--burn-y,0px));transition:transform 12s ease}
+.clock-eyebrow{display:flex;align-items:center;gap:9px;color:var(--muted);font-size:11px;font-weight:800}.hour-period{font:700 10px 'Space Grotesk',sans-serif;color:var(--accent);direction:ltr;letter-spacing:.08em}.clock-time{direction:ltr;display:flex;align-items:center;justify-content:center;position:relative;min-width:0;font:900 clamp(65px,11vw,175px)/.92 var(--font);letter-spacing:-.085em;font-variant-numeric:tabular-nums;white-space:nowrap}.clock-time .hour,.clock-time .minute,.clock-time .colon{transition:color .45s;text-align:center}.clock-time .hour{color:var(--ink)}.clock-time .minute{color:var(--accent)}.clock-time .colon{color:var(--accent);font-size:.72em;margin:0 .075em;opacity:.9;align-self:center}.second-group{display:flex;flex-direction:column;align-items:center;gap:3px;position:relative;margin-left:.15em;align-self:flex-end;margin-bottom:.12em}.second-number{font:700 clamp(20px,2.7vw,42px)/1 'Space Grotesk',sans-serif;letter-spacing:-.04em;color:var(--ink)}.second-label{font:700 8px 'Space Grotesk',sans-serif;color:var(--muted);letter-spacing:.18em}.clock-footer{font:650 10px 'Space Grotesk',sans-serif;color:var(--muted);display:flex;gap:12px;align-items:center;direction:ltr;letter-spacing:.14em}.clock-line-mark{width:24px;height:1px;background:var(--accent)}.clock-index{color:var(--accent);opacity:.75}
+.dhikr-panel{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:clamp(12px,2vh,23px);padding:clamp(20px,3vw,42px)}.panel-overline{display:flex;align-items:center;justify-content:center;gap:11px;color:var(--accent);font-size:11px;font-weight:800}.line-small{width:27px;height:1px;background:linear-gradient(90deg,transparent,var(--accent));opacity:.5}.line-small:last-child{transform:rotate(180deg)}.dhikr-touch{display:grid;place-items:center;min-height:66px;width:100%;max-width:100%;text-align:center;background:transparent;border:0;border-radius:10px;padding:0 2px}.dhikr-text{font-size:clamp(23px,2.7vw,42px);font-weight:800;line-height:1.8;text-wrap:balance;color:var(--ink);letter-spacing:-.045em;will-change:transform,opacity,filter}.dhikr-bottom{display:flex;align-items:center;justify-content:center;gap:11px;direction:ltr;max-width:100%}.dhikr-index{font:600 10px 'Space Grotesk',sans-serif;color:var(--muted);white-space:nowrap}.dhikr-progress{width:90px;height:2px;background:rgba(255,255,255,.11);overflow:hidden;border-radius:9px}.dhikr-progress-fill{display:block;height:100%;width:100%;transform-origin:left;transform:scaleX(0);background:var(--accent);box-shadow:0 0 12px var(--accent)}.dhikr-progress-fill.running{animation:fillTrack var(--dhikr-duration,12s) linear forwards}.dhikr-hint{font-size:9px;font-weight:700;color:var(--muted);white-space:nowrap}
+.count-panel{display:flex;flex-direction:column;justify-content:center;padding:clamp(23px,3vw,45px);gap:clamp(11px,1.6vh,18px)}.count-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.count-copy{display:flex;flex-direction:column;gap:8px;min-width:0}.count-eyebrow{font-size:11px;font-weight:800;color:var(--accent)}.count-target{font-size:clamp(11px,1vw,13px);font-weight:700;color:var(--muted);line-height:1.65}.target-circle{position:relative;display:grid;place-items:center;flex:0 0 clamp(60px,5.7vw,88px);height:clamp(60px,5.7vw,88px);width:clamp(60px,5.7vw,88px);font-family:'Space Grotesk',sans-serif;direction:ltr}.target-circle svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;transform:rotate(-90deg)}.target-circle circle{fill:none;stroke-width:2.8}.target-bg{stroke:rgba(255,255,255,.09)}.target-arc{stroke:var(--accent);stroke-linecap:round;stroke-dasharray:169.65;stroke-dashoffset:169.65;transition:stroke-dashoffset 1s linear}.target-circle>span{font-size:clamp(17px,2vw,27px);font-weight:700;line-height:1;position:absolute;top:32%}.target-circle>small{font-size:9px;color:var(--accent);font-weight:700;position:absolute;top:60%}.remaining{font:700 clamp(29px,3.6vw,58px)/1 'Space Grotesk',monospace;letter-spacing:-.055em;font-variant-numeric:tabular-nums;color:var(--ink);white-space:nowrap;text-align:right}.count-caption{font-size:10px;color:var(--muted);font-weight:700}.work-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:7px;padding-top:clamp(11px,1.5vh,20px);border-top:1px solid rgba(255,255,255,.085)}.work-title{font-size:11px;font-weight:800;color:#d8e4e4}.work-basis{color:var(--muted);font-size:9px}.work-head strong{direction:ltr;margin-inline-start:auto;color:var(--accent);font:700 clamp(16px,1.65vw,25px)/1 'Space Grotesk',monospace;letter-spacing:-.035em;font-variant-numeric:tabular-nums}.work-track{height:4px;border-radius:15px;overflow:hidden;background:rgba(255,255,255,.095);direction:ltr}.work-fill{display:block;width:100%;height:100%;background:linear-gradient(90deg,var(--accent-dim),var(--accent));border-radius:15px;box-shadow:0 0 20px var(--accent);transition:width .65s linear}
+.bottom{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;color:rgba(184,207,207,.47);direction:ltr;font:600 9px 'Space Grotesk',sans-serif;letter-spacing:.15em;min-height:25px}
+/* Layout 01: ChatGPT — twin oversized number stacks with right info cards */
+body[data-style=chatgpt] .watch{grid-template-columns:minmax(0,1.45fr) minmax(330px,.9fr);grid-template-rows:repeat(2,minmax(0,1fr))}
+body[data-style=chatgpt] .clock-panel{grid-column:1;grid-row:1/3}
+body[data-style=chatgpt] .dhikr-panel{grid-column:2;grid-row:1}
+body[data-style=chatgpt] .count-panel{grid-column:2;grid-row:2}
+body[data-style=chatgpt] .clock-time{display:grid;grid-template-columns:auto minmax(35px,.2fr);grid-template-rows:repeat(2,auto);font-size:clamp(100px,min(16vw,25vh),260px);line-height:.76;letter-spacing:-.09em;gap:10px 0}
+body[data-style=chatgpt] .clock-time .hour{grid-column:1;grid-row:1}body[data-style=chatgpt] .clock-time .minute{grid-column:1;grid-row:2}body[data-style=chatgpt] .clock-time .colon{display:none}body[data-style=chatgpt] .clock-time .second-group{grid-column:2;grid-row:2;align-self:center;align-items:flex-start;margin:0 0 0 8px}body[data-style=chatgpt] .clock-time .second-number{font-size:clamp(24px,4vw,54px)}
+body[data-style=chatgpt] .clock-content{gap:clamp(19px,3vh,43px)}body[data-style=chatgpt] .clock-halo{opacity:.35}
+/* Layout 02: Claude — luminous circular orbit with soft violet-blue */
+body[data-style=claude] .watch{grid-template-columns:minmax(0,1.05fr) minmax(340px,.95fr);grid-template-rows:minmax(0,1fr) minmax(0,1fr)}body[data-style=claude] .clock-panel{grid-row:1/3;grid-column:1;border-radius:44px;background:radial-gradient(circle at 50% 45%,rgba(79,216,255,.05),transparent 60%),var(--surface)}body[data-style=claude] .dhikr-panel{grid-column:2;grid-row:1;border-radius:35px}body[data-style=claude] .count-panel{grid-column:2;grid-row:2;border-radius:35px}body[data-style=claude] .orb-ring{opacity:.96;width:min(83%,min(56vw,69vh));max-height:90%}body[data-style=claude] .clock-content{gap:clamp(6px,2vh,19px)}body[data-style=claude] .clock-time{display:grid;grid-template-columns:1fr;grid-template-rows:repeat(2,auto) auto;line-height:.82;gap:10px;letter-spacing:-.07em;font-size:clamp(86px,min(12vw,21vh),207px);font-weight:400}body[data-style=claude] .clock-time .hour,body[data-style=claude] .clock-time .minute{grid-column:1}body[data-style=claude] .clock-time .colon{display:none}body[data-style=claude] .clock-time .second-group{grid-column:1;grid-row:3;margin:0;align-self:center;flex-direction:row;gap:8px}body[data-style=claude] .clock-time .second-number{font-size:clamp(19px,2.2vw,31px);color:var(--accent-bright)}body[data-style=claude] .clock-time .second-label{font-size:9px}body[data-style=claude] .clock-eyebrow{opacity:.82}body[data-style=claude] .clock-footer{opacity:.8}body[data-style=claude] .dhikr-text{font-weight:700;font-family:'Tajawal',var(--arabic)}
+/* Layout 03: DeepSeek — centered golden dial, side editorial cards */
+body[data-style=deepseek] .watch{grid-template-columns:minmax(245px,.85fr) minmax(420px,1.5fr) minmax(245px,.85fr);grid-template-rows:minmax(0,1fr)}body[data-style=deepseek] .clock-panel{grid-column:2;grid-row:1;border-color:rgba(234,198,126,.22);background:radial-gradient(ellipse at 50% 51%,rgba(234,198,126,.12),transparent 63%),linear-gradient(141deg,#ffffff09,transparent 70%),var(--surface)}body[data-style=deepseek] .dhikr-panel{grid-column:1;grid-row:1}body[data-style=deepseek] .count-panel{grid-column:3;grid-row:1;gap:clamp(12px,2.3vh,24px)}body[data-style=deepseek] .orb-ring{opacity:.87;width:min(81%,min(49vw,66vh));max-height:90%}body[data-style=deepseek] .ring-moving{stroke-width:1.5!important;stroke-dasharray:645 911}body[data-style=deepseek] .ring-track{stroke:rgba(234,198,126,.16)}body[data-style=deepseek] .clock-time{font-size:clamp(60px,min(7.5vw,13vh),125px);letter-spacing:-.055em}body[data-style=deepseek] .clock-time .colon{margin:0 .02em}body[data-style=deepseek] .clock-time .second-group{position:absolute;top:calc(100% + 18px);left:50%;transform:translateX(-50%);flex-direction:row;align-self:auto;margin:0;gap:8px}body[data-style=deepseek] .clock-time .second-number{color:var(--accent);font-size:26px}body[data-style=deepseek] .clock-time .second-label{font-size:9px}body[data-style=deepseek] .clock-content{gap:clamp(22px,4vh,40px)}body[data-style=deepseek] .dhikr-panel{background:linear-gradient(145deg,rgba(235,190,100,.035),transparent 70%),var(--surface)}body[data-style=deepseek] .dhikr-text{font-family:'Amiri',serif;font-weight:700;font-size:clamp(29px,2.4vw,39px);line-height:1.8}body[data-style=deepseek] .count-panel .remaining{font-size:clamp(26px,2.4vw,40px)}body[data-style=deepseek] .count-panel .work-head strong{font-size:18px}
+/* Layout 04: Manus — architectural wide horizontal clock + two editorial cards */
+body[data-style=manus] .watch{grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);grid-template-rows:minmax(0,1.14fr) minmax(0,.86fr)}body[data-style=manus] .clock-panel{grid-column:1/3;grid-row:1;background:radial-gradient(ellipse 70% 100% at 45% 90%,rgba(128,125,232,.12),transparent),var(--surface)}body[data-style=manus] .dhikr-panel{grid-column:1;grid-row:2}body[data-style=manus] .count-panel{grid-column:2;grid-row:2}body[data-style=manus] .clock-content{gap:clamp(13px,2vh,25px)}body[data-style=manus] .clock-time{font-size:clamp(95px,min(15.3vw,20vh),224px);font-weight:600;letter-spacing:-.068em}body[data-style=manus] .clock-time .hour{color:var(--ink)}body[data-style=manus] .clock-time .minute{color:var(--accent-bright)}body[data-style=manus] .clock-time .second-group{align-self:center;margin-bottom:0;gap:6px}body[data-style=manus] .clock-time .second-number{color:var(--accent);font-size:clamp(34px,4vw,61px)}body[data-style=manus] .clock-panel::before{inset:0 auto 0 0;width:1px;height:auto;background:linear-gradient(transparent,var(--accent),transparent)}body[data-style=manus] .clock-halo{width:50%;opacity:.4}body[data-style=manus] .dhikr-text{font-weight:700;font-size:clamp(23px,2.4vw,38px)}body[data-style=manus] .count-panel{gap:10px}body[data-style=manus] .count-panel .remaining{font-size:clamp(29px,3vw,49px)}
+/* Focused ambient/portrait layout, consistent hierarchy for each edition */
+@media(max-width:1050px) and (min-width:781px){
+ body[data-style=deepseek] .watch{grid-template-columns:minmax(0,1.05fr) minmax(330px,.95fr);grid-template-rows:repeat(2,minmax(0,1fr))}
+ body[data-style=deepseek] .clock-panel{grid-column:1;grid-row:1/3}body[data-style=deepseek] .dhikr-panel{grid-column:2;grid-row:1}body[data-style=deepseek] .count-panel{grid-column:2;grid-row:2}
+ body[data-style=deepseek] .orb-ring{width:min(83%,min(55vw,65vh))}
+ body[data-style=deepseek] .clock-time{font-size:clamp(65px,7.4vw,110px)}
+}
+@media(max-width:780px){
+ .app{padding:calc(env(safe-area-inset-top) + 12px) 17px calc(env(safe-area-inset-bottom) + 10px);height:100dvh;min-height:510px}
+ .topbar{min-height:44px}.brand-icon{width:33px;height:33px;border-radius:11px}.brand-icon svg{width:19px;height:19px}.brand-type strong{font-size:12px}.brand-type .today{font-size:9px}.header-center{display:none}.icon-action{width:37px;height:37px;border-radius:12px}
+ .watch{display:flex!important;flex-direction:column;gap:clamp(10px,1.7vh,19px);padding:clamp(10px,1.6vh,18px) 0;min-height:0;flex:1}
+ .watch>section{width:100%;min-height:0!important;flex:none;grid-area:auto!important;border-radius:clamp(20px,5vw,29px)!important}
+ .clock-panel{flex:1 1 auto!important;min-height:0;overflow:hidden}.clock-content{padding:clamp(12px,2.4vh,25px) 11px;gap:clamp(10px,2vh,19px)}.clock-eyebrow{font-size:10px}.clock-footer{font-size:9px}
+ .dhikr-panel{min-height:95px!important;flex:0 0 clamp(105px,17vh,155px)!important;padding:14px 14px;gap:8px}.panel-overline{font-size:10px}.dhikr-touch{min-height:47px}.dhikr-text{font-size:clamp(21px,5vw,29px)!important;line-height:1.65}.dhikr-bottom{gap:9px}.dhikr-hint{font-size:8px}
+ .count-panel{flex:0 0 auto!important;gap:9px;padding:15px 19px!important}.count-top{gap:6px}.target-circle{height:56px;width:56px;flex-basis:56px}.target-circle>span{font-size:18px}.count-eyebrow{font-size:10px}.count-target{font-size:10px}.remaining{font-size:clamp(29px,7vw,39px)!important}.count-caption{font-size:9px}.work-head{padding-top:9px;gap:6px}.work-title{font-size:10px}.work-basis{font-size:9px}.work-head strong{font-size:clamp(15px,4.1vw,19px)!important}.work-track{height:3px}
+ .bottom{font-size:8px;min-height:14px}
+ body[data-style=chatgpt] .clock-time{display:grid;grid-template-columns:auto 44px;grid-template-rows:repeat(2,auto);font-size:clamp(86px,min(24vw,18vh),157px);gap:7px 0;line-height:.75}.clock-time .second-label{font-size:7px}body[data-style=chatgpt] .clock-time .second-number{font-size:clamp(26px,8vw,43px)}
+ body[data-style=claude] .orb-ring{width:min(80vw,48vh);max-height:89%}body[data-style=claude] .clock-time{font-size:clamp(69px,min(17vw,13.7vh),116px);gap:4px;line-height:.81}body[data-style=claude] .clock-time .second-number{font-size:20px}
+ body[data-style=deepseek] .orb-ring{width:min(75vw,41vh);max-height:86%}body[data-style=deepseek] .clock-time{font-size:clamp(54px,min(15vw,12vh),91px)}body[data-style=deepseek] .clock-time .second-group{top:calc(100% + 11px)}body[data-style=deepseek] .clock-time .second-number{font-size:21px}body[data-style=deepseek] .clock-content{gap:12px}body[data-style=deepseek] .dhikr-text{font-size:clamp(26px,5.9vw,34px)!important}
+ body[data-style=manus] .clock-time{font-size:clamp(69px,min(15.5vw,13.5vh),128px)}body[data-style=manus] .clock-time .second-number{font-size:clamp(23px,6vw,37px)}body[data-style=manus] .clock-time .second-group{margin-left:.08em}body[data-style=manus] .clock-content{gap:12px}
+}
+@media(max-width:780px) and (max-height:730px){
+ .app{padding-top:calc(env(safe-area-inset-top) + 8px);padding-bottom:calc(env(safe-area-inset-bottom) + 5px);min-height:460px}.topbar{min-height:38px}.brand-type .today{display:none}.watch{gap:7px;padding:6px 0}.dhikr-panel{flex-basis:87px!important;min-height:87px!important;padding:7px 13px;gap:5px}.dhikr-touch{min-height:40px}.dhikr-text{font-size:20px!important}.count-panel{padding:9px 15px!important;gap:6px}.count-top .target-circle{height:46px;width:46px;flex-basis:46px}.count-caption{display:none}.work-head{padding-top:7px}.work-track{height:2px}body[data-style=chatgpt] .clock-time{font-size:clamp(73px,min(21vw,16vh),122px)}body[data-style=claude] .clock-time{font-size:clamp(59px,min(15vw,13vh),95px)}body[data-style=deepseek] .clock-time{font-size:clamp(50px,min(14vw,11vh),78px)}body[data-style=manus] .clock-time{font-size:clamp(55px,min(14vw,12vh),108px)}
+}
+@media(min-width:781px) and (max-height:690px){.app{padding-top:12px;padding-bottom:7px}.topbar{min-height:43px}.watch{padding:10px 0;gap:13px}.bottom{min-height:12px}.dhikr-panel{gap:8px;padding:14px}.dhikr-text{font-size:clamp(21px,2.1vw,32px)}.count-panel{gap:8px;padding:15px}.count-target{font-size:10px}.target-circle{height:57px;width:57px;flex-basis:57px}.remaining{font-size:clamp(29px,3vw,44px)}.work-head{padding-top:10px}.work-track{height:3px}body[data-style=chatgpt] .clock-time{font-size:clamp(91px,min(14vw,23vh),173px)}body[data-style=claude] .clock-time{font-size:clamp(73px,min(11vw,19vh),137px)}body[data-style=deepseek] .clock-time{font-size:clamp(59px,min(6.6vw,12vh),95px)}body[data-style=manus] .clock-time{font-size:clamp(73px,min(13vw,19vh),143px)}}
+/* Unified settings panel */
+.backdrop{position:fixed;inset:0;z-index:20;background:rgba(2,5,9,.62);backdrop-filter:blur(0);opacity:0;visibility:hidden;transition:opacity .32s,visibility .32s,backdrop-filter .32s}.backdrop.open{opacity:1;visibility:visible;backdrop-filter:blur(11px)}.settings{position:fixed;z-index:21;top:0;bottom:0;right:0;width:min(460px,95vw);overflow-y:auto;overscroll-behavior:contain;background:#121c22;box-shadow:-25px 0 95px #0009;border-left:1px solid rgba(255,255,255,.12);border-radius:25px 0 0 25px;padding:28px 25px 35px;transform:translateX(104%);visibility:hidden;transition:transform .44s cubic-bezier(.22,.9,.2,1),visibility .44s;scrollbar-width:thin;scrollbar-color:#ffffff35 transparent}.settings.open{transform:translateX(0);visibility:visible}.drawer-handle{display:none}.settings-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.settings-tag{font:700 9px 'Space Grotesk',sans-serif;letter-spacing:.19em;direction:ltr;color:#75ccc7;text-align:right}.settings-header h2{font-size:23px;margin:10px 0 6px}.settings-header p{font-size:11px;color:var(--muted);margin:0;line-height:1.8}.setting-section{margin-top:26px}.section-title{display:flex;align-items:center;justify-content:space-between;gap:9px;margin-bottom:12px}.section-title strong{font-size:12px}.section-title small{font:700 10px 'Space Grotesk',sans-serif;color:#819b9e;direction:ltr;letter-spacing:.07em}
+.design-options{display:grid;grid-template-columns:1fr 1fr;gap:9px}.design-option{min-height:117px;position:relative;display:flex;flex-direction:column;align-items:stretch;text-align:right;gap:11px;background:#ffffff06;border:1px solid #ffffff1c;border-radius:16px;padding:12px;transition:background .25s,border-color .25s}.design-option:hover{background:#ffffff0c}.design-option.selected{border-color:#79d8d1;background:rgba(9,153,153,.1)}.mini-face{height:44px;display:flex;align-items:center;justify-content:center;gap:4px;direction:ltr;border-radius:10px;background:#081218;color:#a7e9de}.mini-face i{font-style:normal;font:800 26px/.8 'Outfit',sans-serif;letter-spacing:-2px}.mini-chatgpt{flex-direction:column;gap:1px}.mini-chatgpt i{font-size:22px}.mini-claude{border:1px solid #725d9d;background:#141020;flex-direction:column;gap:0}.mini-claude i{color:#cbbaff;font-size:16px}.mini-deepseek{border:1px solid #6b5430;background:#1b150a}.mini-deepseek i{font:650 20px 'Orbitron',sans-serif;color:#f4ce84;letter-spacing:-1px}.mini-manus{background:#151528}.mini-manus i{font:700 22px 'Rajdhani',sans-serif;color:#b1c6fe}.option-details{display:flex;flex-direction:column;gap:5px}.option-details b{font:700 14px 'Outfit',sans-serif;direction:ltr;text-align:right}.option-details small{font:500 10px 'Space Grotesk',sans-serif;color:#8ea3aa;direction:ltr;text-align:right}.selected-dot{position:absolute;top:17px;right:17px;width:10px;height:10px;border-radius:50%;border:2px solid #86979c}.design-option.selected .selected-dot{border-color:#7cdbd3;background:#7cdbd3;box-shadow:0 0 11px #7cdbd355}
+.font-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.font-option{border:1px solid #ffffff19;border-radius:12px;background:#ffffff06;min-height:63px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:5px}.font-option b{font-size:20px;letter-spacing:-1px;direction:ltr}.font-option span{color:#84979d;font:600 9px 'Space Grotesk',sans-serif;direction:ltr}.font-option.selected{background:#09999919;border-color:#6bcac4}.time-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.time-picker label{display:flex;flex-direction:column;gap:8px;min-width:0}.time-picker label span{text-align:center;color:#8e9fa6;font-size:10px;font-weight:700}.time-picker select{appearance:none;text-align:center;text-align-last:center;width:100%;height:50px;padding:0 4px;background:#ffffff0b;border:1px solid #ffffff24;border-radius:12px;color:#eef5f6;font:700 20px 'Space Grotesk',sans-serif}.time-picker select option{background:#15212a;color:white}.setting-note{color:#879fa6;font-size:10px;line-height:1.9;margin:12px 0 0}.intervals{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;direction:ltr}.intervals button{border:1px solid #ffffff1c;border-radius:11px;background:#ffffff08;padding:12px 4px;font:700 12px 'Space Grotesk',sans-serif}.intervals button.selected{background:#09999921;border-color:#66cbc4;color:#8febdf}.switch-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:15px 0;border-bottom:1px solid #ffffff12}.switch-row:first-child{border-top:1px solid #ffffff12}.switch-row>div{display:flex;flex-direction:column;gap:6px}.switch-row b{font-size:12px}.switch-row small{font-size:10px;color:#8ea2a9}.switch{width:45px;height:27px;border-radius:99px;background:#ffffff27;border:1px solid #ffffff19;position:relative;flex:none;transition:background .25s}.switch:before{content:"";position:absolute;width:19px;height:19px;left:3px;top:3px;border-radius:50%;background:#c8d5d4;transition:transform .25s}.switch.active{background:#099999;border-color:#099999}.switch.active:before{transform:translateX(18px);background:#081717}.settings-actions{margin-top:23px;display:grid;grid-template-columns:1fr 1fr;gap:9px}.settings-actions button{padding:13px 8px;font-size:11px;font-weight:800;border-radius:12px;border:1px solid #ffffff22}.main-btn{background:#099999;color:#061c1c}.other-btn{background:#ffffff0c}.settings-actions .text-btn{grid-column:1/-1;background:transparent;color:#aebfc0}.last-note{font-size:10px;line-height:2;color:#8599a0;margin:19px 0 0}
+.install-banner{position:fixed;z-index:12;bottom:calc(13px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(94%,400px);padding:13px;border:1px solid #ffffff22;border-radius:17px;background:#19262adf;backdrop-filter:blur(16px);box-shadow:0 10px 45px #0009;display:flex;align-items:center;gap:10px}.install-banner[hidden]{display:none}.install-mark{color:#071416;background:#82e1d2;border-radius:10px;flex:0 0 35px;height:35px;display:grid;place-items:center;font-size:27px}.install-banner>div:nth-child(2){display:flex;flex-direction:column;gap:4px;flex:1}.install-banner b{font-size:11px}.install-banner span{font-size:9px;color:#a1b5bc}.install-banner button{padding:8px 10px;border:0;border-radius:9px;background:#099999;color:#00191b;font-size:10px;font-weight:800}.install-banner #dismissInstall{background:none;color:#bad0d5;font-size:19px;padding:6px}.toast{position:fixed;z-index:30;bottom:20px;left:50%;transform:translate(-50%,14px);pointer-events:none;max-width:min(90vw,440px);border:1px solid #ffffff28;background:#14262bed;backdrop-filter:blur(20px);border-radius:12px;padding:11px 17px;font-size:11px;line-height:1.8;color:white;text-align:center;opacity:0;visibility:hidden;transition:opacity .3s,transform .3s,visibility .3s}.toast.visible{visibility:visible;opacity:1;transform:translate(-50%,0)}
+@media(max-width:780px){.settings{top:auto;bottom:0;left:0;right:0;border-radius:27px 27px 0 0;width:100%;max-height:min(90dvh,820px);height:auto;padding:18px 23px calc(25px + env(safe-area-inset-bottom));border-left:0;border-top:1px solid #ffffff22;transform:translateY(103%)}.settings.open{transform:translateY(0)}.drawer-handle{display:block;width:35px;height:4px;background:#ffffff30;border-radius:20px;margin:-6px auto 18px}.settings-header h2{font-size:21px}}
+body[data-quiet=true] .ambient,body[data-quiet=true] .orb-ring circle,body[data-quiet=true] .clock-halo,body[data-quiet=true] .pulse-dot,body[data-quiet=true] .live-led{animation:none!important}body[data-quiet=true] .ambient{opacity:.22}body[data-quiet=true] .noise{opacity:.04}
+@keyframes drift{to{transform:translate(9%,-7%) scale(1.15)}}@keyframes driftBack{to{transform:translate(-10%,12%) scale(.85)}}@keyframes blink{50%{opacity:.36;box-shadow:none}}@keyframes pulseGlow{50%{opacity:.27;transform:scale(1.08)}}@keyframes spinRing{to{transform:rotate(270deg)}}@keyframes fillTrack{to{transform:scaleX(1)}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}.dhikr-progress-fill.running{animation-duration:var(--dhikr-duration,12s)!important}}
+
+/* Geometry refinements verified on desktop captures. */
+body[data-style=chatgpt] .clock-time .second-group{margin-left:21px;transform:translateX(8px)}
+body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
+@media(max-width:780px){body[data-style=chatgpt] .clock-time .second-group{margin-left:8px;transform:translateX(0)}body[data-style=deepseek] .clock-content{gap:clamp(35px,5vh,53px)}}
+
 </style>
+  
 </head>
-<body>
-<div class="layout">
-<header><div class="brand"><span class="logo"></span><span>moment<span style="color:#099999">.</span></span></div><small>THE WATCH COLLECTION / 2026</small></header>
-<section class="hero"><div class="kicker">ONE IDEA · DIFFERENT MINDS</div><h1>الوقت نفسه<br><span>والتجربة مختلفة</span></h1><p class="subtitle">الساعة والذكر بخمس رؤى تصميمية مستقلة<br>اختر نسختك المفضلة وثبتها كتطبيق أندرويد</p><div class="metrics"><div class="metric"><b>05</b> VERSIONS</div><span class="sep"></span><div class="metric"><b>01</b> IDEA</div><span class="sep"></span><div class="metric"><b>17:00</b> TARGET</div></div></section>
-<div class="sectionhead"><div><h2>استكشف النسخ</h2><p>اضغط على أي بطاقة لفتح الساعة مباشرة</p></div><label>05 / 06 READY</label></div>
-<main class="grid" id="versions"></main>
-<footer><span>© MOMENT / CLOCK COLLECTION</span><span>كل نسخة لها اسم وأيقونة مستقلان عند التثبيت</span></footer>
-</div>
+<body data-style="chatgpt" data-font="outfit" data-quiet="false" data-compact="false">
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="app" id="app">
+    <header class="topbar">
+      <div class="brand" aria-label="Clock">
+        <div class="brand-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 6v6l4.3 2.8"></path></svg></div>
+        <div class="brand-type"><strong>CLOCK<span class="brand-point">.</span></strong><span id="today" class="today">الوقت والذكر</span></div>
+      </div>
+      <div class="header-center" aria-hidden="true"><span class="pulse-dot"></span><span id="designLabel">CHATGPT EDITION</span></div>
+      <div class="top-actions">
+        <button type="button" id="fullButton" class="icon-action" aria-label="ملء الشاشة" title="ملء الشاشة"><svg viewBox="0 0 24 24"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"></path></svg></button>
+        <button type="button" id="settingsButton" class="icon-action settings-trigger" aria-label="الإعدادات واختيار التصميم" title="الإعدادات" aria-expanded="false" aria-controls="settings"><svg viewBox="0 0 24 24"><path d="M12 3.5l1.8.3.7 1.9 1.6.9 2-.5 1.2 1.2-.5 2 1 1.5 1.8.7v1.8l-1.8.7-1 1.5.5 2-1.2 1.2-2-.5-1.6 1-.7 1.8h-1.8l-.7-1.8-1.6-1-2 .5-1.2-1.2.5-2-1-1.5-1.8-.7v-1.8l1.8-.7 1-1.5-.5-2 1.2-1.2 2 .5 1.6-.9.7-1.9z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
+      </div>
+    </header>
+
+    <main class="watch" id="watch" aria-label="ساعة الوقت والذكر">
+      <section class="clock-panel" aria-label="الوقت الحالي">
+        <div class="clock-ornament" aria-hidden="true">
+          <svg class="orb-ring" viewBox="0 0 320 320"><defs><linearGradient id="ringGradient" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="var(--accent-bright)"/><stop offset="100%" stop-color="var(--accent-dim)"/></linearGradient></defs><circle class="ring-track" cx="160" cy="160" r="145"/><circle class="ring-glow" cx="160" cy="160" r="145"/><circle class="ring-moving" cx="160" cy="160" r="145"/></svg>
+          <div class="clock-halo"></div>
+        </div>
+        <div class="clock-content">
+          <div class="clock-eyebrow"><span class="live-led"></span><span>الوقت الان</span><span class="hour-period" id="period">PM</span></div>
+          <div class="clock-time" role="timer" id="timeContainer" aria-label="الوقت الحالي">
+            <span class="hour" id="hour">08</span>
+            <span class="colon">:</span>
+            <span class="minute" id="minute">28</span>
+            <div class="second-group"><span class="second-number" id="second">00</span><span class="second-label">SECONDS</span></div>
+          </div>
+          <div class="clock-footer"><span class="clock-line-mark"></span><span id="clockModeLabel">LIVE TIME</span><span class="clock-index" id="clockIndex">01 / 04</span></div>
+        </div>
+      </section>
+
+      <section class="dhikr-panel" aria-label="الاذكار">
+        <div class="panel-overline"><span class="line-small"></span><span>ذكر اللحظة</span><span class="line-small"></span></div>
+        <button class="dhikr-touch" id="nextDhikr" type="button" aria-label="عرض الذكر التالي" title="اضغط لتغيير الذكر"><span class="dhikr-text" id="dhikrText" aria-live="polite">سبحان الله</span></button>
+        <div class="dhikr-bottom"><span class="dhikr-index" id="dhikrIndex">01 / 10</span><div class="dhikr-progress" aria-hidden="true"><span class="dhikr-progress-fill" id="dhikrFill"></span></div><span class="dhikr-hint">اضغط للتغيير</span></div>
+      </section>
+
+      <section class="count-panel" aria-label="الوقت المتبقي لنهاية الدوام">
+        <div class="count-top">
+          <div class="count-copy"><span class="count-eyebrow">نهاية الدوام</span><span class="count-target" id="countTarget">المتبقي حتى 05:00 مساء</span></div>
+          <div class="target-circle" aria-hidden="true"><svg viewBox="0 0 64 64"><circle class="target-bg" cx="32" cy="32" r="27"></circle><circle class="target-arc" id="targetArc" cx="32" cy="32" r="27"></circle></svg><span id="targetHour">05</span><small id="targetPeriod">PM</small></div>
+        </div>
+        <div class="remaining" id="remaining" dir="ltr" role="timer" aria-label="الوقت المتبقي">00:00:00</div>
+        <div class="count-caption" id="countCaption">ساعات · دقائق · ثواني</div>
+        <div class="work-head"><span class="work-title">نسبة الدوام المتبقية</span><span class="work-basis">من 9 ساعات</span><strong id="workPercent" dir="ltr">100.0000%</strong></div>
+        <div class="work-track" aria-hidden="true"><span class="work-fill" id="workFill"></span></div>
+      </section>
+    </main>
+
+    <footer class="bottom"><span id="footerName">CHATGPT / DYNAMIC TYPE</span><span>TIME · DHIKR · FOCUS</span></footer>
+  </div>
+
+  <div id="backdrop" class="backdrop" aria-hidden="true"></div>
+  <aside id="settings" class="settings" role="dialog" aria-modal="true" aria-label="تخصيص الساعة" aria-hidden="true" tabindex="-1">
+    <div class="drawer-handle" aria-hidden="true"></div>
+    <div class="settings-header"><div><div class="settings-tag">PERSONALIZE YOUR CLOCK</div><h2>اعدادات الساعة</h2><p>كل التصاميم في مكان واحد</p></div><button id="closeSettings" type="button" class="icon-action" aria-label="اغلاق الاعدادات"><svg viewBox="0 0 24 24"><path d="M5 5l14 14M19 5L5 19"></path></svg></button></div>
+    <section class="setting-section"><div class="section-title"><strong>اختر التصميم</strong><small>4 WATCH FACES</small></div>
+      <div class="design-options" id="designOptions">
+        <button type="button" class="design-option selected" data-design="chatgpt" aria-pressed="true"><span class="mini-face mini-chatgpt"><i>08</i><i>28</i></span><span class="option-details"><b>ChatGPT</b><small>Dynamic Digits</small></span><span class="selected-dot"></span></button>
+        <button type="button" class="design-option" data-design="claude" aria-pressed="false"><span class="mini-face mini-claude"><i>08</i><i>28</i></span><span class="option-details"><b>Claude</b><small>Orbit / Calm</small></span><span class="selected-dot"></span></button>
+        <button type="button" class="design-option" data-design="deepseek" aria-pressed="false"><span class="mini-face mini-deepseek"><i>08:28</i></span><span class="option-details"><b>DeepSeek</b><small>Golden Precision</small></span><span class="selected-dot"></span></button>
+        <button type="button" class="design-option" data-design="manus" aria-pressed="false"><span class="mini-face mini-manus"><i>08:28</i></span><span class="option-details"><b>Manus</b><small>Calm Geometry</small></span><span class="selected-dot"></span></button>
+      </div>
+    </section>
+    <section class="setting-section"><div class="section-title"><strong>خط الساعة</strong><small>TYPOGRAPHY</small></div>
+      <div class="font-options" id="fontOptions">
+        <button class="font-option selected" type="button" data-font="outfit" aria-pressed="true"><b style="font-family:Outfit">08:28</b><span>Outfit</span></button>
+        <button class="font-option" type="button" data-font="space" aria-pressed="false"><b style="font-family:'Space Grotesk'">08:28</b><span>Space</span></button>
+        <button class="font-option" type="button" data-font="manrope" aria-pressed="false"><b style="font-family:Manrope">08:28</b><span>Manrope</span></button>
+        <button class="font-option" type="button" data-font="orbitron" aria-pressed="false"><b style="font-family:Orbitron;font-size:17px">08:28</b><span>Orbitron</span></button>
+        <button class="font-option" type="button" data-font="rajdhani" aria-pressed="false"><b style="font-family:Rajdhani">08:28</b><span>Rajdhani</span></button>
+        <button class="font-option" type="button" data-font="mono" aria-pressed="false"><b style="font-family:'IBM Plex Mono';font-size:16px">08:28</b><span>Mono</span></button>
+      </div>
+    </section>
+    <section class="setting-section"><div class="section-title"><strong>موعد نهاية الدوام</strong><small>TARGET TIME</small></div>
+      <div class="time-picker" dir="ltr"><label><span>الساعة</span><select id="targetH" aria-label="ساعة نهاية الدوام"></select></label><label><span>الدقائق</span><select id="targetM" aria-label="دقائق نهاية الدوام"></select></label><label><span>الفترة</span><select id="targetAP" aria-label="الفترة"><option value="AM">AM</option><option value="PM">PM</option></select></label></div>
+      <p class="setting-note">الدوام 9 ساعات ثابتة، والنسبة المتبقية تنخفض كل ثانية</p>
+    </section>
+    <section class="setting-section"><div class="section-title"><strong>تغيير الذكر كل</strong><small>INTERVAL</small></div><div class="intervals" id="intervals"><button type="button" data-interval="8">8s</button><button type="button" data-interval="12" class="selected">12s</button><button type="button" data-interval="20">20s</button><button type="button" data-interval="30">30s</button></div></section>
+    <section class="setting-section switches"><div class="switch-row"><div><b>تنسيق 24 ساعة</b><small>بدلا من AM / PM</small></div><button id="formatToggle" type="button" class="switch" role="switch" aria-label="تنسيق 24 ساعة" aria-checked="false"></button></div><div class="switch-row"><div><b>وضع AMOLED الهادئ</b><small>تقليل الحركة عند التشغيل الطويل</small></div><button id="quietToggle" type="button" class="switch" role="switch" aria-label="الوضع الهادئ" aria-checked="false"></button></div><div class="switch-row"><div><b>ابقاء الشاشة مستيقظة</b><small id="wakeCaption">حسب دعم المتصفح</small></div><button id="wakeToggle" type="button" class="switch" role="switch" aria-label="ابقاء الشاشة مستيقظة" aria-checked="false"></button></div></section>
+    <div class="settings-actions"><button type="button" id="settingsFull" class="main-btn">ملء الشاشة</button><button type="button" id="installButton" class="other-btn">تثبيت التطبيق</button><button type="button" id="resetButton" class="text-btn">استعادة الافتراضي</button></div>
+    <p class="last-note">الوقت حسب ساعة جهازك. جميع الاعدادات تحفظ على هذا الجهاز تلقائيا.</p>
+  </aside>
+  <div class="install-banner" id="installBanner" hidden><div class="install-mark" aria-hidden="true">◷</div><div><b>ثبت Clock على اندرويد</b><span>تطبيق واحد بكل التصاميم</span></div><button id="installNow" type="button">تثبيت</button><button id="dismissInstall" type="button" aria-label="اغلاق">×</button></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script>
-(()=>{
-"use strict";
-const versions=[{"dir":"Chatgpt","label":"ChatGPT","accent":"#099999","category":"DYNAMIC","desc":"تصميم رقمي جريء وحركات ضوئية"},{"dir":"Claude","label":"Claude","accent":"#D8A077","category":"MINIMAL","desc":"تكوين هادئ وخطوط أنيقة"},{"dir":"DeepSeek","label":"DeepSeek","accent":"#E4BE78","category":"LUMINOUS","desc":"تفاصيل مضيئة ولمسات ذهبية"},{"dir":"Gemeni","label":"Gemini","accent":"#6CBFFF","category":"FLUID","desc":"تدرجات سماوية وحضور بصري بسيط"},{"dir":"Manus","label":"Manus","accent":"#A58CFF","category":"AMBIENT","desc":"أسلوب هادئ وخلفية AMOLED داكنة"}];
-const target=document.getElementById("versions");
-const previews=[];
-versions.forEach(v=>{
- const card=document.createElement("a");
- card.className="card";
- card.href="./"+v.dir+"/";
- card.setAttribute("aria-label","فتح "+v.label);
- card.style.setProperty("--accent",v.accent);
- const art=document.createElement("div");art.className="art";
- const time=document.createElement("span");time.className="time";time.textContent="05:00";
- const sec=document.createElement("span");sec.className="seconds";sec.textContent=":00";
- art.append(time,sec);
- const content=document.createElement("div");content.className="content";
- const nameLine=document.createElement("div");nameLine.className="nameLine";
- const h=document.createElement("h3");h.className="cardName";h.textContent=v.label;
- const tag=document.createElement("span");tag.className="tag";tag.textContent=v.category;
- nameLine.append(h,tag);
- const p=document.createElement("p");p.textContent=v.desc;content.append(nameLine,p);
- const arrow=document.createElement("span");arrow.className="arrow";arrow.textContent="↗";arrow.setAttribute("aria-hidden","true");
- card.append(art,content,arrow);target.append(card);previews.push({time,sec});
-});
-const reserved=document.createElement("div");reserved.className="card coming";
-reserved.style.setProperty("--accent","#8295a0");
-reserved.innerHTML='<div class="art"><span class="time">—:—</span></div><div class="content"><div class="nameLine"><h3 class="cardName">Sixth Edition</h3><span class="tag">COMING SOON</span></div><p>مكان محجوز للنسخة السادسة عند إضافتها</p></div>';
-target.append(reserved);
-function refresh(){const now=new Date(),h=String(now.getHours()%12||12).padStart(2,"0"),m=String(now.getMinutes()).padStart(2,"0"),s=String(now.getSeconds()).padStart(2,"0");previews.forEach(p=>{p.time.textContent=h+":"+m;p.sec.textContent=":"+s;});}
-refresh();setInterval(refresh,1000);
+(() => {
+  'use strict';
+
+  const $ = (id) => document.getElementById(id);
+  const all = (selector) => [...document.querySelectorAll(selector)];
+  const pad = (v) => String(v).padStart(2, '0');
+  const STORE = 'clock-unified-2026-v1';
+  const STYLES = Object.freeze({
+    chatgpt: {name:'ChatGPT', subtitle:'DYNAMIC TYPE', index:'01 / 04'},
+    claude: {name:'Claude', subtitle:'CALM ORBIT', index:'02 / 04'},
+    deepseek: {name:'DeepSeek', subtitle:'GOLDEN PRECISION', index:'03 / 04'},
+    manus: {name:'Manus', subtitle:'CALM GEOMETRY', index:'04 / 04'}
+  });
+  const FONTS = new Set(['outfit','space','manrope','orbitron','rajdhani','mono']);
+  const DURATIONS = [8,12,20,30];
+  const DHIKR = Object.freeze([
+    'سبحان الله',
+    'الحمد لله',
+    'لا اله الا الله',
+    'الله اكبر',
+    'سبحان الله وبحمده',
+    'سبحان الله العظيم',
+    'لا حول ولا قوة الا بالله',
+    'استغفر الله',
+    'اللهم صل وسلم على نبينا محمد',
+    'حسبي الله ونعم الوكيل'
+  ]);
+  const DEFAULT = Object.freeze({style:'chatgpt',font:'outfit',targetHour:17,targetMinute:0,interval:12,format24:false,quiet:false});
+  const settings = {...DEFAULT};
+  const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
+  const responsive = matchMedia('(max-width:780px)');
+  const language = new Intl.DateTimeFormat('ar-JO',{weekday:'long',day:'numeric',month:'long'});
+  let menuOpen = false;
+  let dhikrIndex = 0;
+  let dhikrTimeout = null;
+  let dhikrChanging = false;
+  let tickTimeout = null;
+  let toastTimeout = null;
+  let wakeRequested = false;
+  let wakeSentinel = null;
+  let deferredInstall = null;
+  let lastFocused = null;
+  let previousDate = '';
+  let installedDismissed = false;
+
+  function safeRead(key) {
+    try {const content=localStorage.getItem(key);return content?JSON.parse(content):null;}catch(_){return null;}
+  }
+  function restore() {
+    // Preserve user choices from the previous ChatGPT edition on this same origin.
+    const prior=safeRead(STORE) || safeRead('moment-watch-dhikr-v1') || {};
+    const style=prior.style || 'chatgpt';
+    settings.style = Object.hasOwn(STYLES,style) ? style : 'chatgpt';
+    settings.font = FONTS.has(prior.font) ? prior.font : DEFAULT.font;
+    settings.targetHour = Number.isInteger(prior.targetHour) && prior.targetHour>=0 && prior.targetHour<=23 ? prior.targetHour : DEFAULT.targetHour;
+    settings.targetMinute = Number.isInteger(prior.targetMinute) && prior.targetMinute>=0 && prior.targetMinute<=59 ? prior.targetMinute : DEFAULT.targetMinute;
+    settings.interval = DURATIONS.includes(prior.interval) ? prior.interval : DEFAULT.interval;
+    settings.format24 = prior.format24===true;
+    settings.quiet = prior.quiet===true;
+  }
+  function persist(){try{localStorage.setItem(STORE,JSON.stringify(settings));}catch(_){}}
+  function toast(message){
+    const el=$('toast');el.textContent=message;el.classList.add('visible');
+    clearTimeout(toastTimeout);toastTimeout=setTimeout(()=>el.classList.remove('visible'),3000);
+  }
+  function timeComponents(now){
+    const hour = settings.format24 ? now.getHours() : (now.getHours()%12||12);
+    return {hour:pad(hour),minute:pad(now.getMinutes()),second:pad(now.getSeconds())};
+  }
+  function animateValue(id,value){
+    const element=$(id);if(element.textContent===value)return;
+    element.textContent=value;
+    if(settings.quiet||motionPreference.matches||typeof element.animate!=='function')return;
+    const small=id==='second';
+    element.animate(
+      [{opacity:small?.5:.38,transform:`translateY(${small?4:13}px)`,filter:small?'none':'blur(4px)'},{opacity:1,transform:'translateY(0)',filter:'blur(0)'}],
+      {duration:small?230:460,easing:'cubic-bezier(.16,1,.3,1)'}
+    );
+  }
+  function updateClock(){
+    const now=new Date(), parts=timeComponents(now);
+    animateValue('hour',parts.hour);animateValue('minute',parts.minute);animateValue('second',parts.second);
+    $('period').textContent=settings.format24?'24H':(now.getHours()<12?'AM':'PM');
+    $('timeContainer').setAttribute('aria-label',`الساعة ${parts.hour}:${parts.minute}:${parts.second}`);
+    const dateKey=`${now.getFullYear()}-${now.getMonth()}-${now.getDate()}`;
+    if(dateKey!==previousDate){previousDate=dateKey;$('today').textContent=language.format(now);}
+    const target=new Date(now);
+    target.setHours(settings.targetHour,settings.targetMinute,0,0);
+    const remaining=Math.max(0,Math.ceil((target.getTime()-now.getTime())/1000));
+    const hours=Math.floor(remaining/3600),minutes=Math.floor((remaining%3600)/60),seconds=remaining%60;
+    $('remaining').textContent=`${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+    const workTotal=9*60*60;
+    const ratio=Math.max(0,Math.min(1,remaining/workTotal));
+    const value=ratio*100;
+    $('workPercent').textContent=`${value.toFixed(4)}%`;
+    $('workFill').style.width=`${value}%`;
+    const circumference=2*Math.PI*27;
+    $('targetArc').style.strokeDasharray=String(circumference);
+    $('targetArc').style.strokeDashoffset=String(circumference*(1-ratio));
+    const tH=settings.targetHour%12||12,period=settings.targetHour>=12?'PM':'AM';
+    const readable=`${pad(tH)}:${pad(settings.targetMinute)} ${period==='PM'?'مساء':'صباحا'}`;
+    $('targetHour').textContent=pad(tH);
+    $('targetPeriod').textContent=period;
+    $('countTarget').textContent=remaining===0?`انتهى الدوام · ${readable}`:`المتبقي حتى ${readable}`;
+    $('countCaption').textContent=remaining===0?'انتهى العد التنازلي لليوم':'ساعات · دقائق · ثواني';
+    // Move bright pixels a few pixels each minute to reduce fixed OLED highlights.
+    const shift=[[0,1],[1,-1],[-1,1],[2,0],[-2,-1],[0,-2]][(now.getHours()*60+now.getMinutes())%6];
+    document.documentElement.style.setProperty('--burn-x',`${shift[0]}px`);
+    document.documentElement.style.setProperty('--burn-y',`${shift[1]}px`);
+  }
+  function startClock(){
+    updateClock();clearTimeout(tickTimeout);
+    tickTimeout=setTimeout(startClock,1000-Date.now()%1000+14);
+  }
+  function startDhikrProgress(){
+    const fill=$('dhikrFill');fill.classList.remove('running');
+    fill.style.setProperty('--dhikr-duration',`${settings.interval}s`);
+    void fill.offsetWidth;fill.classList.add('running');
+  }
+  function scheduleDhikr(){
+    clearTimeout(dhikrTimeout);startDhikrProgress();
+    dhikrTimeout=setTimeout(()=>showDhikr(1),settings.interval*1000);
+  }
+  function showDhikr(direction){
+    if(dhikrChanging)return;
+    dhikrChanging=true;clearTimeout(dhikrTimeout);
+    const text=$('dhikrText'),quick=motionPreference.matches||settings.quiet;
+    const delay=quick?0:260;
+    if(delay&&text.animate)text.animate([{opacity:1,transform:'translateY(0)',filter:'blur(0)'},{opacity:0,transform:'translateY(-14px)',filter:'blur(7px)'}],{duration:delay,easing:'ease-in',fill:'forwards'});
+    setTimeout(()=>{
+      dhikrIndex=(dhikrIndex+direction+DHIKR.length)%DHIKR.length;
+      text.textContent=DHIKR[dhikrIndex];
+      $('dhikrIndex').textContent=`${pad(dhikrIndex+1)} / ${pad(DHIKR.length)}`;
+      if(!quick&&text.animate)text.animate([{opacity:0,transform:'translateY(18px)',filter:'blur(6px)'},{opacity:1,transform:'translateY(0)',filter:'blur(0)'}],{duration:500,easing:'cubic-bezier(.16,1,.3,1)'});
+      dhikrChanging=false;scheduleDhikr();
+    },delay);
+  }
+  function makeOptions(){
+    const h=$('targetH'),m=$('targetM');
+    for(let i=1;i<=12;i++){const opt=document.createElement('option');opt.value=pad(i);opt.textContent=pad(i);h.append(opt);}
+    for(let i=0;i<60;i++){const opt=document.createElement('option');opt.value=pad(i);opt.textContent=pad(i);m.append(opt);}
+  }
+  function setSelected(selector,attribute,chosen){
+    all(selector).forEach(el=>{
+      const isSelected=el.dataset[attribute]===String(chosen);
+      el.classList.toggle('selected',isSelected);
+      el.setAttribute('aria-pressed',String(isSelected));
+    });
+  }
+  function reflect(){
+    document.body.dataset.style=settings.style;
+    document.body.dataset.font=settings.font;
+    document.body.dataset.quiet=String(settings.quiet);
+    const style=STYLES[settings.style];
+    $('designLabel').textContent=`${style.name.toUpperCase()} EDITION`;
+    $('clockIndex').textContent=style.index;
+    $('footerName').textContent=`${style.name.toUpperCase()} / ${style.subtitle}`;
+    $('clockModeLabel').textContent=style.subtitle;
+    setSelected('[data-design]','design',settings.style);
+    setSelected('[data-font]','font',settings.font);
+    setSelected('[data-interval]','interval',settings.interval);
+    $('targetH').value=pad(settings.targetHour%12||12);
+    $('targetM').value=pad(settings.targetMinute);
+    $('targetAP').value=settings.targetHour>=12?'PM':'AM';
+    for(const [id,state] of [['formatToggle',settings.format24],['quietToggle',settings.quiet]]){
+      $(id).classList.toggle('active',state);$(id).setAttribute('aria-checked',String(state));
+    }
+    $('settingsFull').textContent=document.fullscreenElement?'الخروج من ملء الشاشة':'ملء الشاشة';
+    const themes={chatgpt:'#050c10',claude:'#080912',deepseek:'#090906',manus:'#080a12'};
+    document.querySelector('meta[name="theme-color"]').setAttribute('content',themes[settings.style]);
+    updateClock();persist();
+  }
+  function switchStyle(style){
+    if(!Object.hasOwn(STYLES,style)||style===settings.style)return;
+    const watch=$('watch');watch.classList.add('changing');
+    setTimeout(()=>{settings.style=style;reflect();watch.classList.remove('changing');},motionPreference.matches?0:180);
+  }
+  function updateTarget(){
+    const h=Number($('targetH').value),m=Number($('targetM').value),p=$('targetAP').value;
+    if(!Number.isInteger(h)||h<1||h>12||!Number.isInteger(m)||m<0||m>59||!['AM','PM'].includes(p))return;
+    settings.targetHour=h%12+(p==='PM'?12:0);settings.targetMinute=m;
+    reflect();
+  }
+  function settingsVisible(show){
+    menuOpen=show;
+    $('settings').classList.toggle('open',show);
+    $('backdrop').classList.toggle('open',show);
+    $('settings').setAttribute('aria-hidden',String(!show));
+    $('settingsButton').setAttribute('aria-expanded',String(show));
+    if(show){lastFocused=document.activeElement;setTimeout(()=>$('closeSettings').focus({preventScroll:true}),90);}
+    else if(lastFocused&&lastFocused.focus){lastFocused.focus({preventScroll:true});}
+  }
+  async function fullscreen(){
+    try{
+      if(document.fullscreenElement)await document.exitFullscreen();
+      else if(document.documentElement.requestFullscreen)await document.documentElement.requestFullscreen({navigationUI:'hide'});
+      else toast('ملء الشاشة غير مدعوم في هذا المتصفح');
+    }catch(_){toast('المتصفح لم يسمح بملء الشاشة');}
+    reflect();
+  }
+  async function holdWake(){
+    if(!('wakeLock' in navigator)){wakeRequested=false;toast('المتصفح لا يدعم منع انطفاء الشاشة');return;}
+    try{
+      wakeSentinel=await navigator.wakeLock.request('screen');
+      $('wakeToggle').classList.add('active');$('wakeToggle').setAttribute('aria-checked','true');
+      $('wakeCaption').textContent='نشط أثناء ظهور الصفحة';
+      wakeSentinel.addEventListener('release',()=>{
+        wakeSentinel=null;
+        $('wakeToggle').classList.remove('active');$('wakeToggle').setAttribute('aria-checked','false');
+        $('wakeCaption').textContent=wakeRequested?'سيعاد الطلب عند العودة':'حسب دعم المتصفح';
+      });
+    }catch(_){wakeRequested=false;toast('تعذر إبقاء الشاشة مستيقظة في هذا المتصفح');}
+  }
+  async function toggleWake(){
+    wakeRequested=!wakeRequested;
+    if(wakeRequested)await holdWake();
+    else{if(wakeSentinel)try{await wakeSentinel.release();}catch(_){}wakeSentinel=null;
+      $('wakeToggle').classList.remove('active');$('wakeToggle').setAttribute('aria-checked','false');$('wakeCaption').textContent='حسب دعم المتصفح';}
+  }
+  const isStandalone=()=>matchMedia('(display-mode:standalone)').matches||matchMedia('(display-mode:fullscreen)').matches||!!navigator.standalone;
+  async function install(){
+    if(isStandalone()){toast('التطبيق مثبت ويعمل بشكل مستقل');return;}
+    if(deferredInstall){
+      const prompt=deferredInstall;deferredInstall=null;
+      try{await prompt.prompt();const choice=await prompt.userChoice;if(choice?.outcome==='accepted'){$('installBanner').hidden=true;}else toast('تقدر تثبته لاحقا من الإعدادات');}catch(_){toast('تعذر إظهار التثبيت الآن');}
+      return;
+    }
+    toast('على Android: من قائمة المتصفح ⋮ اختر تثبيت التطبيق أو إضافة للشاشة الرئيسية');
+  }
+  function configureInstall(){
+    window.addEventListener('beforeinstallprompt',(event)=>{event.preventDefault();deferredInstall=event;});
+    window.addEventListener('appinstalled',()=>{$('installBanner').hidden=true;deferredInstall=null;});
+    try{installedDismissed=sessionStorage.getItem('clock-install-dismissed')==='yes';}catch(_){}
+    if(/Android/i.test(navigator.userAgent)&&!isStandalone()&&!installedDismissed){setTimeout(()=>{$('installBanner').hidden=false;},1700);}
+    $('installNow').addEventListener('click',install);
+    $('installButton').addEventListener('click',install);
+    $('dismissInstall').addEventListener('click',()=>{$('installBanner').hidden=true;try{sessionStorage.setItem('clock-install-dismissed','yes');}catch(_){}});
+  }
+  function connectUI(){
+    $('settingsButton').addEventListener('click',()=>settingsVisible(true));
+    $('closeSettings').addEventListener('click',()=>settingsVisible(false));
+    $('backdrop').addEventListener('click',()=>settingsVisible(false));
+    $('fullButton').addEventListener('click',fullscreen);
+    $('settingsFull').addEventListener('click',fullscreen);
+    $('nextDhikr').addEventListener('click',()=>showDhikr(1));
+    for(const b of all('[data-design]'))b.addEventListener('click',()=>switchStyle(b.dataset.design));
+    for(const b of all('[data-font]'))b.addEventListener('click',()=>{settings.font=b.dataset.font;reflect();});
+    for(const b of all('[data-interval]'))b.addEventListener('click',()=>{settings.interval=Number(b.dataset.interval);reflect();scheduleDhikr();});
+    for(const id of ['targetH','targetM','targetAP'])$(id).addEventListener('change',updateTarget);
+    $('formatToggle').addEventListener('click',()=>{settings.format24=!settings.format24;reflect();});
+    $('quietToggle').addEventListener('click',()=>{settings.quiet=!settings.quiet;reflect();});
+    $('wakeToggle').addEventListener('click',toggleWake);
+    $('resetButton').addEventListener('click',()=>{Object.assign(settings,DEFAULT);reflect();scheduleDhikr();toast('تمت استعادة الإعدادات الافتراضية');});
+    document.addEventListener('keydown',(event)=>{
+      if(event.key==='Escape'&&menuOpen){event.preventDefault();settingsVisible(false);}
+      if(event.key==='Tab'&&menuOpen){
+        const focusable=all('#settings button:not(:disabled),#settings select:not(:disabled)');
+        const first=focusable[0],last=focusable[focusable.length-1];
+        if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+        else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+      }
+    });
+    document.addEventListener('fullscreenchange',reflect);
+    document.addEventListener('visibilitychange',async()=>{if(!document.hidden){updateClock();if(wakeRequested&&!wakeSentinel)await holdWake();}});
+    window.addEventListener('pageshow',updateClock);
+    let x=null;
+    $('nextDhikr').addEventListener('touchstart',event=>{x=event.touches[0].clientX;},{passive:true});
+    $('nextDhikr').addEventListener('touchend',event=>{
+      if(x===null)return;const dx=event.changedTouches[0].clientX-x;x=null;
+      if(Math.abs(dx)>55){event.preventDefault();showDhikr(dx>0?1:-1);}
+    },{passive:false});
+  }
+  function init(){
+    restore();makeOptions();connectUI();reflect();startClock();scheduleDhikr();configureInstall();
+    if('serviceWorker' in navigator&&isSecureContext){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{}),{once:true});}
+  }
+  init();
 })();
+
 </script>
-</body></html>
+</body>
+</html>
