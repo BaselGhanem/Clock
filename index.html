@@ -1,1 +1,107 @@
-
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#070c11">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="Moment Watch — استكشف تصاميم الساعة والأذكار المستقلة من ChatGPT وClaude وDeepSeek وGemini وManus">
+<title>Moment Watch — The Collection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070c11;--card:#10191e;--teal:#099999;--ink:#eaf5f5;--muted:#90a3ab;color-scheme:dark;font-synthesis:none}
+*,*:before,*:after{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;min-height:100vh;overflow-x:hidden;font-family:"Almarai",Tahoma,sans-serif;color:var(--ink);background:radial-gradient(ellipse 65% 30% at 50% -12%,rgba(9,153,153,.23),transparent 90%),var(--bg)}
+body:before{content:"";inset:0;position:fixed;pointer-events:none;background-image:linear-gradient(#fff 1px,transparent 1px),linear-gradient(90deg,#fff 1px,transparent 1px);background-size:54px 54px;opacity:.014;mask-image:linear-gradient(#000,transparent 80%)}
+a{color:inherit;text-decoration:none}
+a:focus-visible{outline:2px solid #6ae6d9;outline-offset:3px}
+.layout{position:relative;margin:0 auto;width:min(1100px,calc(100% - 36px));padding:25px 0 40px}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font:900 23px "Outfit",sans-serif;direction:ltr;letter-spacing:-1px;display:inline-flex;gap:10px;align-items:center}
+.logo{width:27px;height:27px;display:block;border:7px solid #099999;border-top-color:#adfff5;border-radius:50%;box-shadow:0 0 24px #09999955}
+header small{direction:ltr;font:700 10px "Space Grotesk",sans-serif;color:#748b95;letter-spacing:2px;text-align:left}
+.hero{text-align:center;padding:88px 0 63px}
+.kicker{display:inline-flex;gap:9px;align-items:center;border:1px solid #09999955;padding:10px 14px;border-radius:100px;background:#09999912;font:700 10px "Space Grotesk",sans-serif;color:#9aede4;letter-spacing:2px;direction:ltr}
+.kicker:before{content:"";width:6px;height:6px;border-radius:50%;background:#21e2d5;box-shadow:0 0 10px #21e2d5;animation:blink 2.4s infinite}
+h1{font-size:clamp(38px,6vw,75px);line-height:1.28;letter-spacing:-2.5px;margin:22px 0 14px;font-weight:800}
+h1 span{background:linear-gradient(120deg,#abf8f0,#099999);-webkit-background-clip:text;background-clip:text;color:transparent}
+.subtitle{font-size:14px;color:#a1b2ba;line-height:2.1;margin:0}
+.metrics{display:flex;justify-content:center;align-items:center;gap:16px;direction:ltr;margin-top:29px}
+.metric{display:flex;align-items:baseline;gap:7px;color:#83969e;font:700 10px "Space Grotesk",sans-serif;letter-spacing:1px}
+.metric b{font-size:17px;color:#d9eeed}.sep{height:3px;width:3px;border-radius:50%;background:#57727d}
+.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-bottom:20px}
+.sectionhead h2{font-size:20px;margin:0 0 7px}.sectionhead p{color:#8599a1;font-size:11px;line-height:1.8;margin:0}
+.sectionhead label{font:700 11px "Space Grotesk",sans-serif;color:#8da3ab;direction:ltr}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.card{--accent:#099999;position:relative;display:flex;flex-direction:column;min-height:285px;overflow:hidden;border-radius:25px;border:1px solid rgba(255,255,255,.085);background:linear-gradient(138deg,rgba(255,255,255,.053),rgba(255,255,255,.006) 60%),var(--card);transition:transform .3s,border-color .3s,box-shadow .3s}
+.card:not(.coming):hover{transform:translateY(-6px);border-color:color-mix(in srgb,var(--accent),transparent 35%);box-shadow:0 15px 55px #0009}
+.art{position:relative;min-height:167px;flex:1;display:grid;place-items:center;background:radial-gradient(ellipse 55% 90% at 50% 110%,color-mix(in srgb,var(--accent),transparent 76%),transparent)}
+.art:before{content:"";position:absolute;width:160px;height:160px;border:1px solid color-mix(in srgb,var(--accent),transparent 70%);border-radius:50%;box-shadow:0 0 0 24px #ffffff03,0 0 0 46px #ffffff02;animation:float 7s ease-in-out infinite}
+.time{position:relative;font:800 49px "Outfit",sans-serif;letter-spacing:-2px;direction:ltr;font-variant-numeric:tabular-nums;text-shadow:0 0 24px color-mix(in srgb,var(--accent),transparent 45%)}
+.card:nth-child(2) .time{font-weight:400;letter-spacing:1px}
+.card:nth-child(3) .time{font:700 47px "Space Grotesk",sans-serif;color:#ffe0ae}
+.card:nth-child(4) .time{font-weight:700}
+.card:nth-child(5) .time{font-weight:500}
+.seconds{position:absolute;left:15px;bottom:14px;font:700 10px "Space Grotesk",sans-serif;letter-spacing:2px;color:var(--accent);direction:ltr}
+.content{padding:17px 21px 23px;border-top:1px solid #ffffff0d}
+.nameLine{display:flex;align-items:center;justify-content:space-between;gap:5px}
+.cardName{font:800 23px "Outfit",sans-serif;letter-spacing:-.6px;direction:ltr;margin:0}
+.tag{font:700 9px "Space Grotesk",sans-serif;letter-spacing:1.2px;color:var(--accent);direction:ltr}
+.content p{font-size:11px;color:#879aa4;line-height:1.85;margin:8px 0 0}
+.arrow{position:absolute;top:15px;left:16px;display:grid;place-items:center;width:29px;height:29px;border:1px solid rgba(255,255,255,.18);border-radius:50%;font:19px "Outfit",sans-serif;color:#b8d1d0}
+.coming{opacity:.58;cursor:default;border-style:dashed}
+.coming .art:before{border-style:dashed;box-shadow:none;animation:none}
+.coming .time{color:#71828a}
+footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:1px solid #ffffff12;margin-top:36px;padding-top:21px;color:#667d87;font:600 11px "Space Grotesk",sans-serif;direction:ltr}
+footer span:last-child{font:400 11px Almarai,sans-serif;direction:rtl}
+@keyframes float{50%{transform:scale(1.05);opacity:.65}}@keyframes blink{50%{opacity:.32}}
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:540px){.layout{width:min(100% - 28px,470px);padding-top:19px}.brand{font-size:21px}header small{font-size:9px}.hero{padding:68px 0 48px}h1{font-size:43px;letter-spacing:-1.4px}.subtitle{font-size:12px}.metrics{gap:10px}.metric{font-size:9px}.metric b{font-size:15px}.grid{grid-template-columns:1fr;gap:12px}.card{flex-direction:row-reverse;min-height:121px;border-radius:18px}.art{min-height:121px;flex:0 0 41%}.art:before{width:105px;height:105px;box-shadow:0 0 0 18px #ffffff03}.time{font-size:33px!important;letter-spacing:-1px!important}.seconds{font-size:8px;bottom:9px;left:9px}.content{border:0;min-width:0;flex:1;display:flex;flex-direction:column;justify-content:center;padding:15px 11px}.cardName{font-size:20px}.tag{font-size:8px}.content p{font-size:10px}.arrow{width:22px;height:22px;left:9px;top:9px;font-size:15px}.sectionhead h2{font-size:17px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="layout">
+<header><div class="brand"><span class="logo"></span><span>moment<span style="color:#099999">.</span></span></div><small>THE WATCH COLLECTION / 2026</small></header>
+<section class="hero"><div class="kicker">ONE IDEA · DIFFERENT MINDS</div><h1>الوقت نفسه<br><span>والتجربة مختلفة</span></h1><p class="subtitle">الساعة والذكر بخمس رؤى تصميمية مستقلة<br>اختر نسختك المفضلة وثبتها كتطبيق أندرويد</p><div class="metrics"><div class="metric"><b>05</b> VERSIONS</div><span class="sep"></span><div class="metric"><b>01</b> IDEA</div><span class="sep"></span><div class="metric"><b>17:00</b> TARGET</div></div></section>
+<div class="sectionhead"><div><h2>استكشف النسخ</h2><p>اضغط على أي بطاقة لفتح الساعة مباشرة</p></div><label>05 / 06 READY</label></div>
+<main class="grid" id="versions"></main>
+<footer><span>© MOMENT / CLOCK COLLECTION</span><span>كل نسخة لها اسم وأيقونة مستقلان عند التثبيت</span></footer>
+</div>
+<script>
+(()=>{
+"use strict";
+const versions=[{"dir":"Chatgpt","label":"ChatGPT","accent":"#099999","category":"DYNAMIC","desc":"تصميم رقمي جريء وحركات ضوئية"},{"dir":"Claude","label":"Claude","accent":"#D8A077","category":"MINIMAL","desc":"تكوين هادئ وخطوط أنيقة"},{"dir":"DeepSeek","label":"DeepSeek","accent":"#E4BE78","category":"LUMINOUS","desc":"تفاصيل مضيئة ولمسات ذهبية"},{"dir":"Gemeni","label":"Gemini","accent":"#6CBFFF","category":"FLUID","desc":"تدرجات سماوية وحضور بصري بسيط"},{"dir":"Manus","label":"Manus","accent":"#A58CFF","category":"AMBIENT","desc":"أسلوب هادئ وخلفية AMOLED داكنة"}];
+const target=document.getElementById("versions");
+const previews=[];
+versions.forEach(v=>{
+ const card=document.createElement("a");
+ card.className="card";
+ card.href="./"+v.dir+"/";
+ card.setAttribute("aria-label","فتح "+v.label);
+ card.style.setProperty("--accent",v.accent);
+ const art=document.createElement("div");art.className="art";
+ const time=document.createElement("span");time.className="time";time.textContent="05:00";
+ const sec=document.createElement("span");sec.className="seconds";sec.textContent=":00";
+ art.append(time,sec);
+ const content=document.createElement("div");content.className="content";
+ const nameLine=document.createElement("div");nameLine.className="nameLine";
+ const h=document.createElement("h3");h.className="cardName";h.textContent=v.label;
+ const tag=document.createElement("span");tag.className="tag";tag.textContent=v.category;
+ nameLine.append(h,tag);
+ const p=document.createElement("p");p.textContent=v.desc;content.append(nameLine,p);
+ const arrow=document.createElement("span");arrow.className="arrow";arrow.textContent="↗";arrow.setAttribute("aria-hidden","true");
+ card.append(art,content,arrow);target.append(card);previews.push({time,sec});
+});
+const reserved=document.createElement("div");reserved.className="card coming";
+reserved.style.setProperty("--accent","#8295a0");
+reserved.innerHTML='<div class="art"><span class="time">—:—</span></div><div class="content"><div class="nameLine"><h3 class="cardName">Sixth Edition</h3><span class="tag">COMING SOON</span></div><p>مكان محجوز للنسخة السادسة عند إضافتها</p></div>';
+target.append(reserved);
+function refresh(){const now=new Date(),h=String(now.getHours()%12||12).padStart(2,"0"),m=String(now.getMinutes()).padStart(2,"0"),s=String(now.getSeconds()).padStart(2,"0");previews.forEach(p=>{p.time.textContent=h+":"+m;p.sec.textContent=":"+s;});}
+refresh();setInterval(refresh,1000);
+})();
+</script>
+</body></html>
