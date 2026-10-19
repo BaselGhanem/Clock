@@ -380,6 +380,38 @@
     .target-time-caption {display:flex;align-items:center;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:13px;font-size:10px;font-weight:700;color:var(--muted)}
     .target-time-caption strong {font:700 12px 'Space Grotesk',sans-serif;letter-spacing:.03em;color:var(--accent)}
     @media (max-width:360px) {.target-time-controls {gap:6px}.target-time-field select {font-size:17px;height:47px}}
+
+    /* Remaining percentage of a fixed nine-hour shift */
+    .workday-percentage{display:flex;flex-direction:column;gap:11px;margin-top:15px;padding-top:13px;border-top:1px solid rgba(225,240,240,.075);position:relative;z-index:1;min-width:0}
+    .workday-percentage-head{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}
+    .workday-percentage-meta{display:flex;flex-wrap:wrap;align-items:center;column-gap:9px;row-gap:4px;min-width:0}
+    .workday-percentage-icon{width:7px;height:7px;border:1.5px solid var(--accent);border-radius:50%;box-shadow:0 0 12px var(--soft);flex-shrink:0}
+    .workday-percentage-label{font-size:10px;font-weight:800;color:#c5d7d7;white-space:nowrap}
+    .workday-percentage-basis{font-size:9px;font-weight:700;color:var(--muted);white-space:nowrap}
+    .workday-percentage-value{font:700 clamp(15px,4vw,20px)/1.1 'Space Grotesk','IBM Plex Mono',monospace;font-variant-numeric:tabular-nums;letter-spacing:-.045em;color:var(--accent);white-space:nowrap;flex-shrink:0;text-align:left}
+    .workday-percentage-track{height:4px;background:rgba(255,255,255,.085);border-radius:99px;overflow:hidden;direction:ltr}
+    .workday-percentage-fill{height:100%;width:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent-strong),var(--accent));box-shadow:0 0 14px var(--accent);transition:width .65s linear}
+    @media (min-width:900px){
+      .workday-percentage{margin-top:clamp(16px,2.8vh,26px);padding-top:clamp(13px,2.2vh,22px);gap:clamp(11px,1.8vh,17px)}
+      .workday-percentage-label{font-size:clamp(11px,.88vw,13px)}
+      .workday-percentage-basis{font-size:10px}
+      .workday-percentage-value{font-size:clamp(17px,1.55vw,24px)}
+      .workday-percentage-track{height:5px}
+    }
+    @media (max-width:400px){
+      .workday-percentage-meta{column-gap:6px}
+      .workday-percentage-label{font-size:9px}
+      .workday-percentage-basis{font-size:8px}
+      .workday-percentage-value{font-size:15px}
+    }
+    @media (max-height:730px) and (max-width:899px){
+      .workday-percentage{gap:7px;margin-top:9px;padding-top:9px}
+      .workday-percentage-track{height:3px}
+    }
+    @media (max-height:580px) and (max-width:899px){
+      .workday-percentage{gap:5px;margin-top:6px;padding-top:5px}
+      .workday-percentage-basis{display:none}
+    }
 </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icon-192.png">
@@ -441,6 +473,19 @@
           </div>
         </div>
         <div class="count-progress" aria-hidden="true"><div class="count-progress-bar" id="countProgress"></div></div>
+        <div class="workday-percentage" aria-label="نسبة ساعات الدوام التسع المتبقية">
+          <div class="workday-percentage-head">
+            <div class="workday-percentage-meta">
+              <span class="workday-percentage-icon" aria-hidden="true"></span>
+              <span class="workday-percentage-label">نسبة الدوام المتبقية</span>
+              <span class="workday-percentage-basis">من 9 ساعات</span>
+            </div>
+            <output class="workday-percentage-value" id="workdayPercentage" dir="ltr" aria-label="النسبة المتبقية">100.0000%</output>
+          </div>
+          <div class="workday-percentage-track" aria-hidden="true">
+            <div class="workday-percentage-fill" id="workdayPercentageBar"></div>
+          </div>
+        </div>
       </section>
     </main>
 
@@ -599,6 +644,11 @@
         const mm = Math.floor((remaining % 3600) / 60);
         const ss = remaining % 60;
         $(`countValue`).textContent = `${pad(hh)}:${pad(mm)}:${pad(ss)}`;
+        // 9 hours = 32,400 seconds; four decimals visibly decrease each second.
+        const workdaySeconds = 9 * 60 * 60;
+        const workdayRatio = Math.min(1, Math.max(0, remaining / workdaySeconds));
+        $(`workdayPercentage`).textContent = `${(workdayRatio * 100).toFixed(4)}%`;
+        $(`workdayPercentageBar`).style.width = `${workdayRatio * 100}%`;
         const isDone = remaining === 0;
         const targetDisplayHour = pref.targetHour % 12 || 12;
         const targetPeriod = pref.targetHour >= 12 ? `PM` : `AM`;
