@@ -422,6 +422,10 @@ body[data-style="3"] .hm{ font-weight:500; letter-spacing:-.04em; }
   .dhikr, .dhikr-dots span, .toast{ transition-duration:.01ms !important; }
 }
 </style>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" href="./icon-192.png">
+<meta name="application-name" content="Moment · DeepSeek">
+<meta name="apple-mobile-web-app-title" content="Moment DeepSeek">
 </head>
 
 <body data-style="1">
@@ -761,6 +765,58 @@ body[data-style="3"] .hm{ font-weight:500; letter-spacing:-.04em; }
   document.addEventListener('gesturestart', (e) => e.preventDefault());
   document.addEventListener('dblclick', (e) => e.preventDefault(), { passive: false });
 
+})();
+</script>
+<script>
+(() => {
+ "use strict";
+ const APP={"dir":"DeepSeek","name":"DeepSeek","accent":"#e4be78"};
+ const UI="<style>\n:host{all:initial;direction:rtl;font-family:system-ui,Tahoma,sans-serif;color:#f1f7f8}\n*{box-sizing:border-box}\n.backdrop{position:fixed;inset:0;background:rgba(3,9,14,.68);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}\n.stage{position:fixed;inset:0;display:flex;align-items:flex-end;justify-content:center;padding:15px 13px max(18px,env(safe-area-inset-bottom));pointer-events:none}\n.panel{pointer-events:auto;width:min(100%,420px);border-radius:28px;border:1px solid #ffffff30;background:linear-gradient(140deg,#1c2a31,#0b1117);box-shadow:0 24px 85px #000d;padding:26px 23px 18px;animation:appear .5s cubic-bezier(.2,.8,.3,1)}\n.head{display:flex;align-items:center;gap:13px}.head img{width:62px;height:62px;border-radius:18px;box-shadow:0 4px 24px #0004}.overline{font-size:10px;letter-spacing:1.7px;color:#9bb4bd;direction:ltr;text-align:right;font-weight:750}.app-name{font-size:20px;font-weight:850;margin-top:6px}\nh2{font-size:23px;line-height:1.5;margin:22px 0 8px}p{font-size:13px;line-height:2;color:#afc0c7;margin:0 0 19px}\nbutton{font-family:inherit;cursor:pointer}.install{width:100%;border:0;min-height:54px;border-radius:15px;background:var(--accent,#099999);color:#061419;font-weight:900;font-size:15px}\n.install:active{transform:scale(.985)}.later{display:block;margin:6px auto 0;padding:13px;color:#afbdc4;background:transparent;border:0;font-size:13px}\n.hint{display:none;background:#ffffff13;color:#e5edef;margin-top:12px;padding:12px;border-radius:12px;font-size:12px;line-height:2}.hint.active{display:block}\n@keyframes appear{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}@media(prefers-reduced-motion:reduce){.panel{animation:none}}\n</style><div class=\"backdrop\" id=\"outside\"></div>\n<div class=\"stage\"><section class=\"panel\" role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"installHeading\">\n<div class=\"head\"><img src=\"./icon-192.png\" alt=\"\"><div><div class=\"overline\">MOMENT · ANDROID APP</div><div class=\"app-name\" id=\"appName\"></div></div></div>\n<h2 id=\"installHeading\">ثبت هالنسخة كتطبيق على موبايلك</h2>\n<p>بتفتح الساعة مباشرة بشاشة كاملة، باسم النسخة وأيقونتها الخاصة، بدون شريط المتصفح</p>\n<button class=\"install\" id=\"installBtn\" type=\"button\">تثبيت التطبيق على أندرويد</button>\n<div class=\"hint\" id=\"hint\" role=\"status\"></div>\n<button class=\"later\" id=\"later\" type=\"button\">المتابعة بدون تثبيت</button>\n</section></div>";
+ if("serviceWorker" in navigator && window.isSecureContext){
+  window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js",{scope:"./"}).catch(()=>{}),{once:true});
+ }
+ if(!/Android/i.test(navigator.userAgent))return;
+ const standalone=()=>matchMedia("(display-mode:standalone)").matches||matchMedia("(display-mode:fullscreen)").matches||!!navigator.standalone;
+ if(standalone())return;
+ try{if(sessionStorage.getItem("moment-install-dismiss-"+APP.dir)==="yes")return;}catch(_){}
+ let installEvent=null,host=null,shadow=null;
+ function close(save){
+  if(save)try{sessionStorage.setItem("moment-install-dismiss-"+APP.dir,"yes");}catch(_){}
+  if(host)host.remove();
+  host=null;
+ }
+ function guide(){
+  if(!shadow)return;
+  const hint=shadow.getElementById("hint");
+  hint.textContent=/SamsungBrowser/i.test(navigator.userAgent)
+   ?"من قائمة Samsung Internet اختر إضافة إلى الشاشة الرئيسية ثم تثبيت"
+   :"افتح قائمة ⋮ في Chrome واختر تثبيت التطبيق أو إضافة إلى الشاشة الرئيسية. قد يحتاج المتصفح بعض الوقت والتفاعل مع الصفحة قبل إظهار طلب التثبيت";
+  hint.classList.add("active");
+ }
+ function show(){
+  if(host||standalone())return;
+  host=document.createElement("div");
+  host.style.cssText="position:fixed;inset:0;z-index:2147483647";
+  shadow=host.attachShadow({mode:"open"});shadow.innerHTML=UI;
+  shadow.querySelector(".panel").style.setProperty("--accent",APP.accent);
+  shadow.getElementById("appName").textContent="Moment · "+APP.name;
+  shadow.getElementById("outside").addEventListener("click",()=>close(true));
+  shadow.getElementById("later").addEventListener("click",()=>close(true));
+  shadow.getElementById("installBtn").addEventListener("click",async ()=>{
+   if(!installEvent){guide();return;}
+   const event=installEvent;installEvent=null;
+   try{
+    await event.prompt();
+    const choice=await event.userChoice;
+    if(choice&&choice.outcome==="accepted")close(true);
+    else guide();
+   }catch(_){guide();}
+  });
+  document.body.appendChild(host);
+ }
+ window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installEvent=e;});
+ window.addEventListener("appinstalled",()=>close(true));
+ if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",show,{once:true});else show();
 })();
 </script>
 </body>
