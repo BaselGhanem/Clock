@@ -1,1 +1,650 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Always-On Display</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&family=Cormorant+Garamond:wght@300;400;500;600&family=Orbitron:wght@400;500;700&family=Tajawal:wght@300;400;500&family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ====== ألوان قابلة للانتقال السلس بين الستايلات ====== */
+@property --c1   { syntax: '<color>'; inherits: true; initial-value: #4fd8ff; }
+@property --c2   { syntax: '<color>'; inherits: true; initial-value: #a78bfa; }
+@property --glow { syntax: '<color>'; inherits: true; initial-value: rgba(79,216,255,.45); }
+
+*{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+
+html,body{
+  height:100%;
+  background:#000;               /* True Black لشاشات OLED */
+  overflow:hidden;
+}
+
+/* ====== ستايل 0: Outfit + Tajawal (نظيف عصري) ====== */
+body{
+  --en:'Outfit','Helvetica Neue',Arial,sans-serif;
+  --ar:'Tajawal','Segoe UI',Tahoma,sans-serif;
+  --c1:#4fd8ff; --c2:#a78bfa; --glow:rgba(79,216,255,.45);
+  --ts:.345;   /* حجم الأرقام نسبةً لقطر الحلقة */
+  --tw:200;    /* وزن الأرقام */
+  --dz:1;      /* معامل حجم الذكر */
+
+  font-family:var(--ar);
+  color:#fff;
+  transition:--c1 .9s ease, --c2 .9s ease, --glow .9s ease;
+  -webkit-user-select:none; user-select:none;
+  touch-action:manipulation;
+  overscroll-behavior:none;
+  -webkit-font-smoothing:antialiased;
+}
+/* ستايل 1: Cormorant Garamond + Amiri (فخامة كلاسيكية) */
+body[data-style="1"]{
+  --en:'Cormorant Garamond','Times New Roman',serif;
+  --ar:'Amiri','Traditional Arabic',serif;
+  --c1:#ffd98a; --c2:#ff9eb5; --glow:rgba(255,200,120,.40);
+  --ts:.40; --tw:400; --dz:1.12;
+}
+/* ستايل 2: Orbitron + Reem Kufi (تقني مستقبلي) */
+body[data-style="2"]{
+  --en:'Orbitron','Courier New',monospace;
+  --ar:'Reem Kufi','Tajawal',sans-serif;
+  --c1:#5dffb0; --c2:#2fd3ff; --glow:rgba(70,255,170,.40);
+  --ts:.275; --tw:500; --dz:.95;
+}
+
+.screen{
+  position:fixed; inset:0;
+  padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+/* الحاوية الرئيسية: تتحرك ببطء لحماية الشاشة من الـ Burn-in */
+.shift{
+  --D:min(84vw,42vh);
+  width:100%; height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:space-evenly;
+  padding:3vh 20px;
+  transition:transform 6s ease-in-out, opacity .45s ease, filter .45s ease;
+}
+@supports (height:1svh){ .shift{ --D:min(84vw,42svh); } }
+.shift.switching{ opacity:0; filter:blur(8px); }
+
+/* ====== التاريخ ====== */
+.date{
+  font-size:clamp(13px,3.6vw,16px);
+  letter-spacing:.04em;
+  color:rgba(255,255,255,.5);
+  transition:opacity 1s;
+}
+
+/* ====== الساعة ====== */
+.clock{
+  position:relative; flex:none;
+  width:var(--D); height:var(--D);
+  display:grid; place-items:center;
+}
+.halo{ position:absolute; inset:-20%; pointer-events:none; will-change:transform; }
+.halo::before{
+  content:''; position:absolute; inset:0; border-radius:50%;
+  background:radial-gradient(circle, var(--glow) 0%, transparent 58%);
+  filter:blur(24px); opacity:.45;
+  animation:breathe 7s ease-in-out infinite;
+}
+.halo::after{
+  content:''; position:absolute; inset:14%; border-radius:50%;
+  background:conic-gradient(from 0deg, transparent 0 8%, var(--c1) 24%, transparent 46%, var(--c2) 70%, transparent 92%);
+  -webkit-mask:radial-gradient(closest-side, transparent 76%, #000 88%, #000 92%, transparent 100%);
+          mask:radial-gradient(closest-side, transparent 76%, #000 88%, #000 92%, transparent 100%);
+  filter:blur(14px); opacity:.26;
+  animation:spin 30s linear infinite;
+}
+@keyframes breathe{
+  0%,100%{ transform:scale(.94); opacity:.34; }
+  50%    { transform:scale(1.06); opacity:.58; }
+}
+@keyframes spin{ to{ transform:rotate(360deg); } }
+
+.ring{
+  position:absolute; inset:0; width:100%; height:100%;
+  overflow:visible; will-change:transform;
+}
+.ring .track{ fill:none; stroke:rgba(255,255,255,.06); stroke-width:6; }
+.ring .arc{ fill:none; stroke:url(#gr); stroke-width:6; stroke-linecap:round; }
+.ring .arc-glow{ filter:blur(6px); opacity:.6; }
+.ring #head{ fill:#fff; filter:drop-shadow(0 0 6px var(--c1)); }
+
+.digits{
+  position:relative; grid-area:1/1;
+  display:flex; flex-direction:column; align-items:center;
+  direction:ltr;
+  font-family:var(--en);
+  font-weight:var(--tw);
+  font-size:calc(var(--D) * var(--ts));
+  line-height:.9;
+  font-variant-numeric:tabular-nums lining-nums;
+  font-feature-settings:"lnum" 1, "tnum" 1;
+  filter:drop-shadow(0 0 16px var(--glow));
+  will-change:transform;
+}
+.num{
+  display:block;
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+}
+#hh{ background-image:linear-gradient(180deg,#fff 35%, var(--c1) 135%); }
+#mm{ background-image:linear-gradient(180deg,var(--c1) -10%, var(--c2) 120%); }
+
+.sec-row{
+  display:flex; align-items:baseline; gap:.45em;
+  margin-top:calc(var(--D) * .035);
+  font-size:calc(var(--D) * .105);
+  line-height:1;
+}
+#sec{ color:var(--c1); font-weight:calc(var(--tw) + 100); text-shadow:0 0 14px var(--glow); }
+#ampm{
+  font-family:var(--ar); font-size:.62em; font-weight:400;
+  color:rgba(255,255,255,.62);
+}
+
+.flip{ animation:flip .6s cubic-bezier(.22,1,.36,1); }
+@keyframes flip{
+  from{ opacity:.15; transform:translateY(12%); }
+  to  { opacity:1;   transform:none; }
+}
+
+/* ====== الأذكار + العداد ====== */
+.side{
+  width:min(90vw,460px);
+  display:flex; flex-direction:column; align-items:center; gap:3vh;
+}
+@supports (height:1svh){ .side{ gap:3svh; } }
+
+.dhikr{
+  width:100%; text-align:center;
+  display:flex; flex-direction:column; align-items:center; gap:2.2vh;
+  will-change:transform;
+}
+.dhikr-text{
+  min-height:2.7em;
+  display:flex; align-items:center; justify-content:center;
+  font-size:calc(clamp(28px,8.4vw,46px) * var(--dz));
+  line-height:1.35; font-weight:400; color:#fff;
+  text-shadow:0 0 22px var(--glow);
+  text-wrap:balance;
+  transition:opacity .9s ease, transform .9s cubic-bezier(.22,1,.36,1), filter .9s ease;
+}
+.dhikr-text.out{ opacity:0; transform:translateY(-18px); filter:blur(4px); }
+.dhikr-text.pre{ opacity:0; transform:translateY(18px);  filter:blur(4px); transition:none; }
+
+.dots{ display:flex; gap:6px; direction:ltr; }
+.dots i{
+  display:block; width:4px; height:4px; border-radius:99px;
+  background:rgba(255,255,255,.17);
+  transition:width .7s cubic-bezier(.22,1,.36,1), background .7s, box-shadow .7s;
+}
+.dots i.on{
+  width:16px;
+  background:linear-gradient(90deg,var(--c1),var(--c2));
+  box-shadow:0 0 10px var(--glow);
+}
+
+.countdown{
+  width:100%;
+  padding:14px 18px 17px;
+  border-radius:26px;
+  background:linear-gradient(160deg, rgba(255,255,255,.06), rgba(255,255,255,.012));
+  border:1px solid rgba(255,255,255,.07);
+  will-change:transform;
+}
+.cd-top{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:13px; }
+.cd-label{ font-size:clamp(12px,3.4vw,14px); color:rgba(255,255,255,.55); }
+.cd-time{
+  direction:ltr;
+  font-family:var(--en);
+  font-weight:calc(var(--tw) + 100);
+  font-size:clamp(22px,6.4vw,30px);
+  font-variant-numeric:tabular-nums lining-nums;
+  font-feature-settings:"lnum" 1, "tnum" 1;
+  text-shadow:0 0 16px var(--glow);
+}
+.bar{ position:relative; height:8px; margin:0 7px; border-radius:99px; background:rgba(255,255,255,.08); }
+.fill{
+  position:absolute; right:0; top:0; bottom:0; width:0;
+  border-radius:99px;
+  background:linear-gradient(to left, var(--c1), var(--c2));
+  box-shadow:0 0 14px var(--glow);
+  transition:width 1s linear;
+}
+.fill::after{
+  content:''; position:absolute; left:-7px; top:50%;
+  width:14px; height:14px; margin-top:-7px; border-radius:50%;
+  background:#fff; box-shadow:0 0 12px 2px var(--c2);
+}
+.countdown.reached .cd-time{ animation:pulse 1.2s ease-in-out infinite; }
+@keyframes pulse{ 0%,100%{ opacity:1; } 50%{ opacity:.45; } }
+
+/* ====== عناصر خفية ====== */
+.ghost{
+  position:fixed; top:calc(env(safe-area-inset-top) + 8px);
+  width:44px; height:44px; border:0; border-radius:50%;
+  background:transparent; color:#fff; opacity:.07;
+  font:500 15px var(--en); cursor:pointer; z-index:5;
+  transition:opacity .3s;
+}
+#fontBtn{ left:8px; }
+#fsBtn{ right:8px; }
+.ghost:hover,.ghost:focus-visible{ opacity:.6; outline:none; }
+
+.hint{
+  position:fixed; left:0; right:0;
+  bottom:calc(env(safe-area-inset-bottom) + 10px);
+  text-align:center; font-size:12px; color:rgba(255,255,255,.35);
+  pointer-events:none; transition:opacity 1.6s;
+}
+.hint.hide{ opacity:0; }
+
+/* ====== الوضع الأفقي ====== */
+@media (orientation:landscape) and (max-height:520px){
+  .shift{ --D:min(78vh,40vw); flex-direction:row; gap:4vw; padding:2vh 4vw; }
+  @supports (height:1svh){ .shift{ --D:min(78svh,40vw); } }
+  .date{ display:none; }
+  .side{ width:min(46vw,440px); gap:2.4vh; }
+  .dhikr-text{ font-size:calc(clamp(22px,4.6vw,38px) * var(--dz)); }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .halo::before,.halo::after{ animation:none; }
+  .flip{ animation:none; }
+}
+</style>
+</head>
+
+<body data-style="0">
+
+<button class="ghost" id="fontBtn" aria-label="تغيير الخط">Aa</button>
+<button class="ghost" id="fsBtn" aria-label="ملء الشاشة">&#x26F6;</button>
+
+<main class="screen">
+  <div class="shift" id="shift">
+
+    <div class="date" id="date"></div>
+
+    <section class="clock" id="clock">
+      <div class="halo" id="halo"></div>
+
+      <svg class="ring" id="ring" viewBox="0 0 300 300" aria-hidden="true">
+        <defs>
+          <linearGradient id="gr" gradientUnits="userSpaceOnUse" x1="20" y1="20" x2="280" y2="280">
+            <stop offset="0" style="stop-color:var(--c1)"/>
+            <stop offset="1" style="stop-color:var(--c2)"/>
+          </linearGradient>
+        </defs>
+        <g id="ticks"></g>
+        <circle class="track" cx="150" cy="150" r="134"/>
+        <circle class="arc arc-glow" id="arcGlow" cx="150" cy="150" r="134" transform="rotate(-90 150 150)"/>
+        <circle class="arc" id="arc" cx="150" cy="150" r="134" transform="rotate(-90 150 150)"/>
+        <circle id="head" cx="150" cy="16" r="4.5"/>
+      </svg>
+
+      <div class="digits" id="digits" aria-live="off">
+        <span class="num" id="hh">00</span>
+        <span class="num" id="mm">00</span>
+        <div class="sec-row"><span id="sec">00</span><span id="ampm">م</span></div>
+      </div>
+    </section>
+
+    <div class="side">
+      <div class="dhikr" id="dhikr">
+        <div class="dhikr-text" id="dhikrText"></div>
+        <div class="dots" id="dots"></div>
+      </div>
+
+      <div class="countdown" id="countdown">
+        <div class="cd-top">
+          <span class="cd-label" id="cdLabel"></span>
+          <span class="cd-time" id="cdTime">00:00:00</span>
+        </div>
+        <div class="bar"><div class="fill" id="cdFill"></div></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div class="hint" id="hint">اضغط مرتين لتغيير نمط الخط</div>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ================= الإعدادات ================= */
+  const CONFIG = {
+    targetHour: 17,          // الساعة المستهدفة للعد التنازلي (17 = 05:00 م)
+    targetMinute: 0,
+    dhikrInterval: 6000,     // مدة بقاء كل ذكر (ms)
+    tiltRange: 22,           // درجات الميلان المطلوبة لأقصى تأثير Parallax
+    burnInShiftEvery: 45000, // إزاحة بسيطة لحماية الشاشة (ms)
+    burnInShiftPx: 6
+  };
+
+  const AZKAR = [
+    'سبحان الله',
+    'الحمد لله',
+    'لا إله إلا الله',
+    'الله أكبر',
+    'أستغفر الله',
+    'لا حول ولا قوة إلا بالله',
+    'سبحان الله وبحمده',
+    'سبحان الله العظيم',
+    'حسبنا الله ونعم الوكيل',
+    'توكلت على الله'
+  ];
+
+  const $ = (id) => document.getElementById(id);
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+  const pad = (n) => String(n).padStart(2, '0');
+
+  const el = {
+    shift: $('shift'), date: $('date'),
+    halo: $('halo'), ring: $('ring'), digits: $('digits'),
+    hh: $('hh'), mm: $('mm'), sec: $('sec'), ampm: $('ampm'),
+    arc: $('arc'), arcGlow: $('arcGlow'), head: $('head'), ticks: $('ticks'),
+    dhikr: $('dhikr'), dhikrText: $('dhikrText'), dots: $('dots'),
+    cd: $('countdown'), cdLabel: $('cdLabel'), cdTime: $('cdTime'), cdFill: $('cdFill'),
+    hint: $('hint'), fontBtn: $('fontBtn'), fsBtn: $('fsBtn')
+  };
+
+  /* ================= حلقة الثواني ================= */
+  const R = 134;
+  const CIRC = 2 * Math.PI * R;
+  [el.arc, el.arcGlow].forEach(c => c.style.strokeDasharray = CIRC);
+
+  // علامات الدقائق حول الحلقة
+  (function buildTicks() {
+    const NS = 'http://www.w3.org/2000/svg';
+    for (let i = 0; i < 60; i++) {
+      const major = i % 5 === 0;
+      const a = i * Math.PI / 30;
+      const r1 = major ? 141 : 144, r2 = 148;
+      const l = document.createElementNS(NS, 'line');
+      l.setAttribute('x1', (150 + r1 * Math.sin(a)).toFixed(2));
+      l.setAttribute('y1', (150 - r1 * Math.cos(a)).toFixed(2));
+      l.setAttribute('x2', (150 + r2 * Math.sin(a)).toFixed(2));
+      l.setAttribute('y2', (150 - r2 * Math.cos(a)).toFixed(2));
+      l.setAttribute('stroke', major ? 'rgba(255,255,255,.38)' : 'rgba(255,255,255,.13)');
+      l.setAttribute('stroke-width', major ? '1.6' : '1');
+      l.setAttribute('stroke-linecap', 'round');
+      el.ticks.appendChild(l);
+    }
+  })();
+
+  /* ================= نص الساعة والتاريخ ================= */
+  function setText(node, val) {
+    if (node.textContent !== val) {
+      node.textContent = val;
+      node.classList.remove('flip');
+      void node.offsetWidth;
+      node.classList.add('flip');
+    }
+  }
+
+  let dateFmt;
+  try {
+    dateFmt = new Intl.DateTimeFormat('ar-u-nu-latn', { weekday: 'long', day: 'numeric', month: 'long' });
+  } catch (e) { dateFmt = null; }
+
+  function renderClock(now) {
+    const h = now.getHours();
+    setText(el.hh, pad(h % 12 || 12));
+    setText(el.mm, pad(now.getMinutes()));
+    setText(el.sec, pad(now.getSeconds()));
+    el.ampm.textContent = h >= 12 ? 'م' : 'ص';
+    if (dateFmt) {
+      const d = dateFmt.format(now);
+      if (el.date.textContent !== d) el.date.textContent = d;
+    }
+  }
+
+  /* ================= العداد التنازلي ================= */
+  const tH = CONFIG.targetHour;
+  el.cdLabel.textContent =
+    'المتبقي حتى ' + pad(tH % 12 || 12) + ':' + pad(CONFIG.targetMinute) + ' ' + (tH >= 12 ? 'م' : 'ص');
+
+  function renderCountdown(now) {
+    const target = new Date(now);
+    target.setHours(CONFIG.targetHour, CONFIG.targetMinute, 0, 0);
+
+    let diff = target - now;
+    let reached = false;
+
+    if (diff <= 0) {
+      if (-diff < 60000) {            // الدقيقة الأولى بعد الموعد
+        reached = true; diff = 0;
+      } else {                        // الموعد التالي = غداً
+        target.setDate(target.getDate() + 1);
+        diff = target - now;
+      }
+    }
+
+    let pct = 100;
+    if (!reached) {
+      const prev = new Date(target);
+      prev.setDate(prev.getDate() - 1);
+      pct = clamp((now - prev) / (target - prev) * 100, 0, 100);
+    }
+
+    const total = Math.ceil(diff / 1000);
+    const hh = Math.floor(total / 3600);
+    const mm = Math.floor((total % 3600) / 60);
+    const ss = total % 60;
+    el.cdTime.textContent = pad(hh) + ':' + pad(mm) + ':' + pad(ss);
+    el.cdFill.style.width = pct.toFixed(3) + '%';
+    el.cd.classList.toggle('reached', reached);
+    if (reached) {
+      el.cdLabel.textContent = 'حان الموعد';
+    } else if (el.cdLabel.textContent === 'حان الموعد') {
+      el.cdLabel.textContent =
+        'المتبقي حتى ' + pad(tH % 12 || 12) + ':' + pad(CONFIG.targetMinute) + ' ' + (tH >= 12 ? 'م' : 'ص');
+    }
+  }
+
+  /* ================= الأذكار ================= */
+  AZKAR.forEach(() => el.dots.appendChild(document.createElement('i')));
+  const dotEls = Array.from(el.dots.children);
+  let dIdx = 0, dhikrBusy = false;
+
+  function paintDhikr(i) {
+    el.dhikrText.textContent = AZKAR[i];
+    dotEls.forEach((d, k) => d.classList.toggle('on', k === i));
+  }
+
+  function nextDhikr() {
+    if (dhikrBusy) return;
+    dhikrBusy = true;
+    el.dhikrText.classList.add('out');                 // خروج: Fade + Slide up
+    setTimeout(() => {
+      dIdx = (dIdx + 1) % AZKAR.length;
+      paintDhikr(dIdx);
+      el.dhikrText.classList.remove('out');
+      el.dhikrText.classList.add('pre');               // تموضع أسفل بدون انتقال
+      void el.dhikrText.offsetWidth;
+      el.dhikrText.classList.remove('pre');            // دخول: Fade + Slide من الأسفل
+      dhikrBusy = false;
+    }, 900);
+  }
+  paintDhikr(0);
+  setInterval(nextDhikr, CONFIG.dhikrInterval);
+
+  /* ================= Parallax (مستشعرات الحركة) ================= */
+  const layers = [
+    { el: el.halo,   d: -16, r: 0  },   // الهالة خلف الكل
+    { el: el.ring,   d: 9,   r: 7  },
+    { el: el.digits, d: 20,  r: 10 },   // الأرقام أقرب للمستخدم
+    { el: el.dhikr,  d: 14,  r: 0  },
+    { el: el.cd,     d: 6,   r: 0  }
+  ];
+  const reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let inX = 0, inY = 0, curX = 0, curY = 0;
+  let hasInput = false, gotOrient = false, base = null, orientBound = false;
+
+  function onOrient(e) {
+    if (e.gamma == null || e.beta == null) return;
+    gotOrient = true; hasInput = true;
+    let g = e.gamma, b = e.beta;
+    const ang = (screen.orientation && screen.orientation.angle) || 0;
+    if (ang === 90) { [g, b] = [b, -g]; }
+    else if (ang === 270 || ang === -90) { [g, b] = [-b, g]; }
+    if (!base) base = { g, b };
+    // إعادة معايرة بطيئة: عندما يثبت الهاتف يعود التأثير للمركز
+    base.g += (g - base.g) * 0.004;
+    base.b += (b - base.b) * 0.004;
+    inX = clamp((g - base.g) / CONFIG.tiltRange, -1, 1);
+    inY = clamp((b - base.b) / CONFIG.tiltRange, -1, 1);
+  }
+  function bindOrientation() {
+    if (orientBound) return;
+    orientBound = true;
+    window.addEventListener('deviceorientation', onOrient, true);
+  }
+  function enableMotion() {
+    if (typeof DeviceOrientationEvent !== 'undefined' &&
+        typeof DeviceOrientationEvent.requestPermission === 'function') {
+      DeviceOrientationEvent.requestPermission()      // iOS يتطلب إذناً بعد لمسة
+        .then(r => { if (r === 'granted') bindOrientation(); })
+        .catch(() => {});
+    }
+  }
+  if (typeof DeviceOrientationEvent !== 'undefined' &&
+      typeof DeviceOrientationEvent.requestPermission !== 'function') {
+    bindOrientation();                                // أندرويد وغيره
+  }
+  if (screen.orientation && screen.orientation.addEventListener) {
+    screen.orientation.addEventListener('change', () => { base = null; });
+  }
+  // احتياطي للمعاينة على الكمبيوتر بالماوس
+  window.addEventListener('pointermove', (e) => {
+    if (e.pointerType !== 'mouse' || gotOrient) return;
+    hasInput = true;
+    inX = (e.clientX / innerWidth - .5) * 2;
+    inY = (e.clientY / innerHeight - .5) * 2;
+  }, { passive: true });
+
+  function applyParallax(t) {
+    let tx = inX, ty = inY;
+    if (!hasInput) {                                  // حركة هادئة تلقائية عند غياب المستشعر
+      tx = Math.sin(t / 5200) * .28;
+      ty = Math.cos(t / 6400) * .22;
+    }
+    if (reduceMotion) { tx = 0; ty = 0; }
+    curX += (tx - curX) * 0.07;
+    curY += (ty - curY) * 0.07;
+    for (const L of layers) {
+      L.el.style.transform =
+        'perspective(900px) translate3d(' + (curX * L.d).toFixed(2) + 'px,' + (curY * L.d).toFixed(2) + 'px,0) ' +
+        'rotateX(' + (-curY * L.r).toFixed(2) + 'deg) rotateY(' + (curX * L.r).toFixed(2) + 'deg)';
+    }
+  }
+
+  /* ================= الحلقة الرئيسية (rAF) ================= */
+  let lastSec = -1;
+  function frame(t) {
+    const now = new Date();
+    const s = now.getSeconds();
+    const p = (s + now.getMilliseconds() / 1000) / 60;     // حركة ثواني سلسة بالميلي ثانية
+
+    const off = CIRC * (1 - p);
+    el.arc.style.strokeDashoffset = off;
+    el.arcGlow.style.strokeDashoffset = off;
+    const a = p * 2 * Math.PI;
+    el.head.setAttribute('cx', (150 + R * Math.sin(a)).toFixed(2));
+    el.head.setAttribute('cy', (150 - R * Math.cos(a)).toFixed(2));
+
+    if (s !== lastSec) {
+      lastSec = s;
+      renderClock(now);
+      renderCountdown(now);
+    }
+    applyParallax(t);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  /* ================= تبديل ستايل الخطوط ================= */
+  let styleIdx = 0, switching = false;
+  try { styleIdx = parseInt(localStorage.getItem('aod-style'), 10) || 0; } catch (e) {}
+  if (styleIdx < 0 || styleIdx > 2) styleIdx = 0;
+  document.body.dataset.style = styleIdx;
+
+  if (document.fonts && document.fonts.load) {            // تحميل مسبق للخطوط
+    ['200 40px Outfit', '400 40px "Cormorant Garamond"', '500 40px Orbitron',
+     '400 30px Tajawal', '400 30px Amiri', '400 30px "Reem Kufi"']
+      .forEach(f => document.fonts.load(f, 'abc 123 سبحان').catch(() => {}));
+  }
+
+  function cycleStyle() {
+    if (switching) return;
+    switching = true;
+    el.shift.classList.add('switching');
+    setTimeout(() => {
+      styleIdx = (styleIdx + 1) % 3;
+      document.body.dataset.style = styleIdx;
+      try { localStorage.setItem('aod-style', styleIdx); } catch (e) {}
+      el.shift.classList.remove('switching');
+      switching = false;
+    }, 450);
+  }
+
+  el.fontBtn.addEventListener('click', (e) => { e.stopPropagation(); cycleStyle(); });
+  el.fsBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    try {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    } catch (err) {}
+  });
+  window.addEventListener('keydown', (e) => { if (e.key === 'f' || e.key === 'F') cycleStyle(); });
+
+  // نقرة مزدوجة في أي مكان
+  let lastTap = 0;
+  document.addEventListener('pointerup', (e) => {
+    if (e.target.closest && e.target.closest('.ghost')) return;
+    const t = performance.now();
+    if (t - lastTap < 320) { cycleStyle(); lastTap = 0; } else { lastTap = t; }
+  }, { passive: true });
+
+  /* ================= إبقاء الشاشة مضاءة ================= */
+  let wake = null;
+  async function keepAwake() {
+    try {
+      if ('wakeLock' in navigator && !wake) {
+        wake = await navigator.wakeLock.request('screen');
+        wake.addEventListener('release', () => { wake = null; });
+      }
+    } catch (e) {}
+  }
+  keepAwake();
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') keepAwake();
+  });
+  document.addEventListener('click', () => { enableMotion(); keepAwake(); });
+
+  /* ================= حماية الشاشة من الاحتراق ================= */
+  setInterval(() => {
+    const r = CONFIG.burnInShiftPx;
+    const x = (Math.random() * 2 - 1) * r, y = (Math.random() * 2 - 1) * r;
+    el.shift.style.transform = 'translate(' + x.toFixed(1) + 'px,' + y.toFixed(1) + 'px)';
+  }, CONFIG.burnInShiftEvery);
+
+  // إخفاء التلميح بعد ثوانٍ
+  setTimeout(() => el.hint.classList.add('hide'), 6000);
+})();
+</script>
+</body>
+</html>
 
