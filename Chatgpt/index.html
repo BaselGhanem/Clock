@@ -239,6 +239,134 @@
       *,*::before,*::after {animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
       .change-fill.running {animation-duration:var(--change-duration,12s)!important}
     }
+  
+    /* Laptop & desktop mode — separate from the mobile watch face. */
+    @media (min-width:900px) {
+      html,body {height:100%;min-height:100%}
+      .shell {
+        width:100%;max-width:1680px;
+        padding:clamp(20px,3.2vh,45px) clamp(35px,4.6vw,88px) clamp(16px,2.4vh,33px);
+      }
+      .topbar {min-height:62px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.07)}
+      .identity {gap:15px}
+      .logo {width:44px;height:44px;border-radius:15px}
+      .logo svg {width:24px;height:24px}
+      .app-name {font-size:14px;letter-spacing:.28em}
+      .date {font-size:12px;margin-top:6px}
+      .actions {gap:12px}
+      .icon-button {width:43px;height:43px;border-radius:14px}
+      main {
+        direction:ltr;
+        display:grid;
+        grid-template-columns:minmax(0,1.45fr) minmax(330px,.9fr);
+        grid-template-rows:minmax(0,1fr) minmax(0,1fr);
+        align-items:stretch;justify-content:normal;
+        gap:clamp(16px,1.7vw,27px);
+        padding:clamp(18px,2.5vh,31px) 0;
+        min-height:0;
+      }
+      main > section {min-width:0;min-height:0;direction:rtl}
+      .clock-zone {
+        grid-column:1;grid-row:1 / 3;
+        border:1px solid rgba(225,240,240,.085);
+        border-radius:clamp(23px,2.35vw,37px);
+        background:
+          radial-gradient(ellipse 70% 58% at 50% 70%,var(--soft),transparent 85%),
+          linear-gradient(150deg,rgba(255,255,255,.035),rgba(255,255,255,.004) 55%);
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.038),0 25px 90px rgba(0,0,0,.16);
+        isolation:isolate;overflow:hidden;
+        padding:clamp(18px,3vh,39px) clamp(12px,2.3vw,34px);
+        gap:clamp(12px,2.5vh,25px);
+      }
+      .clock-zone::before {
+        content:"";position:absolute;top:0;left:16%;right:16%;height:1px;
+        background:linear-gradient(90deg,transparent,var(--accent),transparent);
+        opacity:.4;box-shadow:0 0 35px var(--accent);pointer-events:none;
+      }
+      .clock-zone::after {
+        content:"MOMENT  /  LIVE DISPLAY";
+        position:absolute;left:clamp(24px,3vw,48px);bottom:clamp(21px,2.3vh,32px);
+        font:600 10px 'Space Grotesk',sans-serif;direction:ltr;
+        letter-spacing:.27em;color:var(--muted);opacity:.53;
+      }
+      .eyebrow {font-size:11px;letter-spacing:.22em;gap:12px}
+      .time-aura {width:min(80%,630px);height:auto;aspect-ratio:1;max-height:88%;opacity:.40}
+      .time-display {width:100%;padding:12px 0 0}
+      .clock-line {
+        height:calc(clamp(126px,min(15.7vw,25vh),270px) * var(--digit-scale) * .81);
+      }
+      .digits {
+        font-size:calc(clamp(126px,min(15.7vw,25vh),270px) * var(--digit-scale));
+      }
+      body[data-face="outline"] .clock-line {
+        height:calc(clamp(126px,min(15.7vw,25vh),270px) * var(--digit-scale) * .82);
+      }
+      .tiny-mark {left:calc(50% + clamp(106px,12.2vw,206px));font-size:11px;gap:7px}
+      .sec-label {font-size:clamp(30px,4vw,54px)}
+      body[data-face="precision"] .time-display {max-width:100%;padding:20px 0 13px}
+      body[data-face="precision"] .digits,
+      body[data-face="precision"] .time-top::after {
+        font-size:calc(clamp(83px,min(8.2vw,15.2vh),160px) * var(--digit-scale));
+      }
+      body[data-face="precision"] .time-aura {width:min(78%,590px);height:auto}
+      .dhikr {
+        grid-column:2;grid-row:1;
+        min-height:0;border:1px solid rgba(225,240,240,.082);
+        border-radius:clamp(23px,2.35vw,34px);
+        background:linear-gradient(153deg,rgba(255,255,255,.042),rgba(255,255,255,.012) 73%);
+        padding:clamp(18px,3vw,48px) clamp(17px,2.5vw,40px);
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.028),0 20px 55px rgba(0,0,0,.085);
+        gap:clamp(12px,1.5vh,22px);
+      }
+      .dhikr-kicker {font-size:11px;letter-spacing:.08em;gap:13px}
+      .ornament {width:31px}
+      .dhikr-window {min-height:70px;width:100%}
+      .dhikr-text {font-size:clamp(24px,2.2vw,38px);line-height:1.8;letter-spacing:-.05em}
+      .dhikr-foot {margin-top:2px;gap:14px}
+      .change-track {width:115px}
+      .count-section {
+        grid-column:2;grid-row:2;
+        min-height:0;display:flex;flex-direction:column;justify-content:center;
+        padding:clamp(22px,3vw,45px) clamp(22px,2.7vw,46px);
+        border-radius:clamp(23px,2.35vw,34px);
+      }
+      .count-copy {gap:clamp(7px,1.5vh,17px)}
+      .count-label {font-size:clamp(11px,1vw,14px)}
+      .count-value {font-size:clamp(30px,3.1vw,55px)}
+      .count-sub {font-size:11px}
+      .target-ring {width:clamp(67px,6.6vw,93px);height:clamp(67px,6.6vw,93px);flex-basis:clamp(67px,6.6vw,93px)}
+      .ring-text strong {font-size:clamp(22px,2.3vw,32px)}
+      .ring-text span {font-size:10px}
+      .count-progress {margin-top:clamp(17px,2.8vh,31px)}
+      .bottombar {min-height:24px;align-items:center;font-size:10px}
+      .bottombar .signature {font-size:10px}
+      .settings {
+        top:0;bottom:0;left:auto;right:0;
+        width:min(435px,95vw);max-width:none;max-height:none;height:100dvh;
+        margin:0;border:1px solid rgba(255,255,255,.13);border-right:0;
+        border-radius:28px 0 0 28px;
+        padding:30px 28px 35px;
+        transform:translateX(105%);
+        box-shadow:-25px 0 95px rgba(0,0,0,.48);
+      }
+      .settings.open {transform:translateX(0)}
+      .settings .grabber {display:none}
+      .toast {bottom:30px}
+    }
+    @media (min-width:900px) and (max-height:660px) {
+      .shell {padding-top:13px;padding-bottom:9px}
+      .topbar {min-height:48px;padding-bottom:7px}
+      .clock-zone {padding-top:9px;padding-bottom:9px;gap:6px}
+      .clock-zone::after {bottom:14px;font-size:8px}
+      main {gap:14px;padding:12px 0}
+      .dhikr {gap:7px;padding:13px 18px}
+      .dhikr-text {font-size:clamp(20px,2.1vw,31px)}
+      .dhikr-window {min-height:42px}
+      .count-section {padding:14px 20px}
+      .count-copy {gap:7px}
+      .count-progress {margin-top:13px}
+      .bottombar {min-height:15px}
+    }
   </style>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" href="./icon-192.png">
