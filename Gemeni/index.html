@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>AOD Watch Face</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Tajawal:wght@400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --text-primary: #ffffff;
+            --text-secondary: #aaaaaa;
+            --glow-color: rgba(255, 255, 255, 0.15);
+            --accent-color-1: #4facfe;
+            --accent-color-2: #00f2fe;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: 'Cairo', sans-serif;
+            transition: font-family 0.5s ease;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        /* Font Classes */
+        .font-1 { font-family: 'Cairo', sans-serif; }
+        .font-2 { font-family: 'Tajawal', sans-serif; }
+        .font-3 { font-family: 'Amiri', serif; }
+
+        .watch-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: transform 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            will-change: transform;
+        }
+
+        /* Time Display */
+        .time-section {
+            display: flex;
+            flex-direction: row;
+            align-items: baseline;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .main-time {
+            font-size: 6rem;
+            font-weight: 700;
+            line-height: 1;
+            background: linear-gradient(180deg, #ffffff 0%, #888888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 40px var(--glow-color);
+            letter-spacing: 2px;
+        }
+
+        .seconds-container {
+            display: flex;
+            flex-direction: column;
+            margin-right: 15px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .seconds {
+            font-size: 2.2rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .ampm {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* Countdown Section */
+        .countdown-section {
+            width: 85%;
+            max-width: 350px;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 4px;
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-color-1) 0%, var(--accent-color-2) 100%);
+            border-radius: 10px;
+            box-shadow: 0 0 15px var(--accent-color-2);
+            will-change: width;
+        }
+
+        .countdown-text {
+            margin-top: 15px;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Azkar Section */
+        .azkar-section {
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            perspective: 1000px;
+        }
+
+        .zekr-text {
+            font-size: 1.8rem;
+            font-weight: 400;
+            text-shadow: 0 0 25px var(--glow-color);
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 1.2s ease, transform 1.2s ease;
+            text-align: center;
+            width: 100%;
+            position: absolute;
+        }
+
+        .zekr-text.fade-out {
+            opacity: 0;
+            transform: translateY(-25px);
+        }
+
+        .zekr-text.prepare {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: none;
+        }
+
+        /* Soft corners instruction implemented globally */
+        * {
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body class="font-1">
+
+    <div class="watch-container" id="parallax-container">
+        <!-- Time Section -->
+        <div class="time-section">
+            <div class="main-time" id="hours-minutes">00:00</div>
+            <div class="seconds-container">
+                <div class="seconds" id="seconds">00</div>
+                <div class="ampm" id="ampm">AM</div>
+            </div>
+        </div>
+
+        <!-- Countdown Section -->
+        <div class="countdown-section">
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-bar"></div>
+            </div>
+            <div class="countdown-text" id="countdown-text">- 00:00:00 -</div>
+        </div>
+
+        <!-- Azkar Section -->
+        <div class="azkar-section">
+            <div class="zekr-text" id="zekr">سبحان الله</div>
+        </div>
+    </div>
+
+    <script>
+        // Data Arrays
+        const azkar = [
+            "سبحان الله",
+            "الحمد لله",
+            "لا إله إلا الله",
+            "الله أكبر",
+            "أستغفر الله",
+            "لا حول ولا قوة إلا بالله",
+            "سبحان الله وبحمده",
+            "سبحان الله العظيم",
+            "حسبنا الله ونعم الوكيل",
+            "توكلت على الله"
+        ];
+        
+        const fontClasses = ['font-1', 'font-2', 'font-3'];
+        let currentFont = 0;
+        let currentZekr = 0;
+
+        // DOM Elements
+        const elHoursMinutes = document.getElementById('hours-minutes');
+        const elSeconds = document.getElementById('seconds');
+        const elAmpm = document.getElementById('ampm');
+        const elProgressBar = document.getElementById('progress-bar');
+        const elCountdownText = document.getElementById('countdown-text');
+        const elZekr = document.getElementById('zekr');
+        const parallaxContainer = document.getElementById('parallax-container');
+
+        // Font Switcher (Double Tap)
+        let lastTap = 0;
+        document.body.addEventListener('touchstart', (e) => {
+            const currentTime = new Date().getTime();
+            const tapLength = currentTime - lastTap;
+            if (tapLength < 400 && tapLength > 0) {
+                currentFont = (currentFont + 1) % fontClasses.length;
+                document.body.className = fontClasses[currentFont];
+                e.preventDefault();
+            }
+            lastTap = currentTime;
+        }, { passive: false });
+
+        document.body.addEventListener('dblclick', () => {
+            currentFont = (currentFont + 1) % fontClasses.length;
+            document.body.className = fontClasses[currentFont];
+        });
+
+        // Device Orientation (Parallax 3D Effect)
+        let orientationEnabled = false;
+        function handleOrientation(event) {
+            let x = event.gamma || 0; 
+            let y = event.beta || 0;  
+
+            // Constrain values
+            if (x > 45) x = 45;
+            if (x < -45) x = -45;
+            if (y > 45) y = 45;
+            if (y < -45) y = -45;
+
+            const xPos = (x / 45) * 15;
+            const yPos = (y / 45) * 15;
+
+            parallaxContainer.style.transform = `translate(${xPos}px, ${yPos}px)`;
+        }
+
+        // Enable sensors on first interaction (Required for iOS 13+)
+        document.body.addEventListener('click', () => {
+            if (!orientationEnabled) {
+                if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+                    DeviceOrientationEvent.requestPermission()
+                        .then(response => {
+                            if (response == 'granted') {
+                                window.addEventListener('deviceorientation', handleOrientation);
+                                orientationEnabled = true;
+                            }
+                        })
+                        .catch(console.error);
+                } else {
+                    window.addEventListener('deviceorientation', handleOrientation);
+                    orientationEnabled = true;
+                }
+            }
+        });
+
+        // Azkar Animation Logic
+        setInterval(() => {
+            elZekr.classList.add('fade-out');
+            
+            setTimeout(() => {
+                currentZekr = (currentZekr + 1) % azkar.length;
+                elZekr.innerText = azkar[currentZekr];
+                
+                elZekr.classList.remove('fade-out');
+                elZekr.classList.add('prepare');
+                
+                // Trigger reflow
+                void elZekr.offsetWidth;
+                
+                elZekr.classList.remove('prepare');
+            }, 1200); 
+        }, 6000);
+
+        // Core Time & Countdown Engine (Smooth Animation Frame)
+        let lastSecond = -1;
+        
+        function updateTimeEngine() {
+            const now = new Date();
+            
+            // 1. Update Clock (Only update DOM when seconds change to save battery/resources)
+            const sec = now.getSeconds();
+            if (sec !== lastSecond) {
+                let hours = now.getHours();
+                const min = now.getMinutes();
+                const ampm = hours >= 12 ? 'PM' : 'AM';
+                
+                hours = hours % 12;
+                hours = hours ? hours : 12; // 0 becomes 12
+                
+                elHoursMinutes.innerText = `${String(hours).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+                elSeconds.innerText = String(sec).padStart(2, '0');
+                elAmpm.innerText = ampm;
+                
+                lastSecond = sec;
+            }
+
+            // 2. Update Countdown to 05:00 PM (17:00:00)
+            let target = new Date();
+            target.setHours(17, 0, 0, 0);
+
+            if (now > target) {
+                target.setDate(target.getDate() + 1);
+            }
+
+            const diffMs = target - now;
+            
+            // Format remaining time
+            const h = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((diffMs % (1000 * 60)) / 1000);
+            
+            elCountdownText.innerText = `- ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')} -`;
+
+            // Progress Bar (Base on a 24-hour cycle approaching target)
+            const totalMs = 24 * 60 * 60 * 1000;
+            const elapsedMs = totalMs - diffMs;
+            let progressPercent = (elapsedMs / totalMs) * 100;
+            
+            if(progressPercent > 100) progressPercent = 100;
+            if(progressPercent < 0) progressPercent = 0;
+
+            elProgressBar.style.width = `${progressPercent}%`;
+
+            requestAnimationFrame(updateTimeEngine);
+        }
+
+        // Initialize Engine
+        requestAnimationFrame(updateTimeEngine);
+
+    </script>
+</body>
+</html>
