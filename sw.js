@@ -1,5 +1,5 @@
 'use strict';
-const CACHE='clock-unified-2026-10-26-v2';
+const CACHE='clock-unified-2026-10-26-v4';
 const STATIC=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(STATIC)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('clock-unified-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
