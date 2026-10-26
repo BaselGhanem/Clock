@@ -85,32 +85,37 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
 @media(max-width:780px){body[data-style=chatgpt] .clock-time .second-group{margin-left:8px;transform:translateX(0)}body[data-style=deepseek] .clock-content{gap:clamp(35px,5vh,53px)}}
 
 
-/* Desktop cinematic lighting: clearly visible, mouse-driven, non-obstructive. */
-@media(min-width:781px) and (prefers-reduced-motion:no-preference){
- body.cinema-enabled .watch>section{
-  transform:perspective(900px) rotateX(var(--cinema-rx,0deg)) rotateY(var(--cinema-ry,0deg)) translate3d(var(--cinema-x,0px),var(--cinema-y,0px),0);
-  transition:transform .18s ease-out,border-color .3s ease,box-shadow .3s ease;
-  transform-style:preserve-3d;
+/* Premium typography interaction: the card surfaces stay perfectly still. */
+@media(min-width:781px) and (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference){
+ .watch>section{transform:none!important;transition:border-color .3s ease,box-shadow .3s ease}
+ .watch>section::after{display:none!important}
+ .watch .kinetic-type{
+  position:relative;
+  cursor:default;
+  transition:filter .32s ease,text-shadow .32s ease,color .32s ease;
+  will-change:filter;
+ }
+ .watch .kinetic-type.kinetic-active{
+  filter:brightness(1.18) drop-shadow(0 0 10px var(--glow));
+  text-shadow:0 0 12px color-mix(in srgb,var(--accent) 65%,transparent),0 0 33px var(--glow);
+ }
+ .watch .kinetic-type.kinetic-active:not(.clock-time):not(.remaining){
+  filter:brightness(1.2) drop-shadow(0 0 12px var(--glow));
+ }
+ .watch .kinetic-type.kinetic-active::selection{background:transparent}
+ .watch .kinetic-letter{
+  display:inline-block;white-space:pre;position:relative;
+  transition:transform .42s cubic-bezier(.2,1.5,.25,1),filter .32s ease,color .32s ease;
+  transform:translate3d(var(--letter-x,0px),var(--letter-y,0px),0) scale(var(--letter-scale,1));
+  filter:drop-shadow(0 0 var(--letter-glow,0px) var(--accent));
   will-change:transform;
  }
- body.cinema-enabled .watch>section::after{
-  content:"";position:absolute;inset:0;z-index:4;border-radius:inherit;pointer-events:none;
-  background:radial-gradient(circle 340px at var(--light-x,50%) var(--light-y,50%),color-mix(in srgb,var(--accent) 27%,transparent),transparent 80%);
-  opacity:var(--light-opacity,0);transition:opacity .28s ease;
+ .watch .kinetic-letter:hover{color:var(--accent-bright);--letter-y:-6px;--letter-scale:1.13;--letter-glow:13px}
+ .watch .kinetic-type.kinetic-active:not(:has(.kinetic-letter)){
+  animation:kineticTextPulse .68s cubic-bezier(.2,.9,.25,1) both;
  }
- body.cinema-enabled .watch>section:hover{
-  border-color:color-mix(in srgb,var(--accent) 56%,transparent);
-  box-shadow:0 26px 75px #0007,0 0 48px var(--glow),inset 0 1px #ffffff20;
- }
- .cinema-cursor-glow{
-  position:fixed;top:0;left:0;width:560px;height:560px;z-index:1;
-  border-radius:50%;pointer-events:none;opacity:0;
-  background:radial-gradient(circle,color-mix(in srgb,var(--accent) 22%,transparent),color-mix(in srgb,var(--accent) 8%,transparent) 38%,transparent 70%);
-  transform:translate3d(-1000px,-1000px,0);
-  transition:opacity .3s ease;will-change:transform;
- }
- body.cinema-enabled .cinema-cursor-glow{opacity:.85}
 }
+@keyframes kineticTextPulse{0%{filter:brightness(1)}45%{filter:brightness(1.5) drop-shadow(0 0 14px var(--glow))}100%{filter:brightness(1.18) drop-shadow(0 0 9px var(--glow))}}
 @media(max-width:780px){
  .dhikr-text{will-change:auto;opacity:1!important;filter:none!important}
  .dhikr-touch{overflow:visible}
@@ -119,7 +124,7 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
 
 /* Applies to all four faces, including changing numerals and countdown. */
 .clock-time,.clock-time *, .remaining,.target-circle,.work-head strong,.clock-footer,.dhikr-index{user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none}
-@media(min-width:781px) and (prefers-reduced-motion:no-preference){body.cinema-enabled .cinema-cursor-glow{opacity:1!important}}
+
 </style>
   
 </head>
@@ -526,60 +531,77 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
   }
 
   function setupCinematicPointer(){
-    const watch=$('watch');
-    const panels=Array.from(watch.children).filter(node=>node.tagName==='SECTION');
+    const desktop=matchMedia('(min-width:781px) and (hover:hover) and (pointer:fine)');
     const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-    const desktop=matchMedia('(min-width:781px)');
-    const glow=document.createElement('div');
-    glow.className='cinema-cursor-glow';
-    glow.setAttribute('aria-hidden','true');
-    document.body.append(glow);
-    let frame=0,lastEvent=null,active=null;
-    const clear=()=>{
-      if(frame)cancelAnimationFrame(frame);
-      frame=0;lastEvent=null;active=null;
-      document.body.classList.remove('cinema-enabled');
-      for(const panel of panels){
-        for(const key of ['--cinema-rx','--cinema-ry','--cinema-x','--cinema-y'])panel.style.removeProperty(key);
-        panel.style.setProperty('--light-opacity','0');
+    const watch=$('watch');
+    const selectors='.hour,.minute,.colon,.second-number,.second-label,.clock-eyebrow,.clock-footer,.dhikr-text,.panel-overline,.dhikr-index,.dhikr-hint,.remaining,.count-eyebrow,.count-target,.count-caption,.work-title,.work-basis,.work-head strong,.target-circle>span,.target-circle>small';
+    const targets=Array.from(watch.querySelectorAll(selectors));
+    targets.forEach(el=>el.classList.add('kinetic-type'));
+    // Split only static labels. Clock numbers and dhikr are updated live and must keep their original DOM.
+    const dynamic=new Set(['hour','minute','second','dhikrText','remaining','workPercent','targetHour','targetPeriod','countTarget','dhikrIndex','today','period']);
+    for(const el of targets){
+      if(el.id&&dynamic.has(el.id))continue;
+      if(el.children.length||!el.textContent.trim()||el.textContent.length>65)continue;
+      const str=el.textContent;
+      const frag=document.createDocumentFragment();
+      for(const char of str){
+        const span=document.createElement('span');
+        span.className='kinetic-letter';
+        span.textContent=char;
+        span.setAttribute('aria-hidden','true');
+        frag.append(span);
       }
+      el.setAttribute('aria-label',str);
+      el.replaceChildren(frag);
+    }
+    let active=null,raf=0;
+    const reset=()=>{
+      if(raf)cancelAnimationFrame(raf);raf=0;
+      if(active){active.classList.remove('kinetic-active');active=null;}
     };
-    const render=()=>{
-      frame=0;
-      if(!lastEvent||!desktop.matches||reduced.matches)return clear();
-      const {x,y}=lastEvent;
-      glow.style.transform=`translate3d(${x-280}px,${y-280}px,0)`;
-      const target=document.elementFromPoint(x,y);
-      const panel=panels.find(node=>node===target||node.contains(target))||null;
-      if(active&&active!==panel){
-        for(const key of ['--cinema-rx','--cinema-ry','--cinema-x','--cinema-y'])active.style.removeProperty(key);
-        active.style.setProperty('--light-opacity','0');
-      }
-      active=panel;
-      if(panel){
-        const rect=panel.getBoundingClientRect();
-        const px=Math.max(0,Math.min(1,(x-rect.left)/rect.width));
-        const py=Math.max(0,Math.min(1,(y-rect.top)/rect.height));
-        panel.style.setProperty('--cinema-rx',`${((.5-py)*9).toFixed(2)}deg`);
-        panel.style.setProperty('--cinema-ry',`${((px-.5)*11).toFixed(2)}deg`);
-        panel.style.setProperty('--cinema-x',`${((px-.5)*9).toFixed(2)}px`);
-        panel.style.setProperty('--cinema-y',`${((py-.5)*9).toFixed(2)}px`);
-        panel.style.setProperty('--light-x',`${(px*100).toFixed(1)}%`);
-        panel.style.setProperty('--light-y',`${(py*100).toFixed(1)}%`);
-        panel.style.setProperty('--light-opacity','1');
-      }
-    };
-    document.addEventListener('pointermove',event=>{
-      if(event.pointerType!=='mouse'||!desktop.matches||reduced.matches){clear();return;}
-      document.body.classList.add('cinema-enabled');
-      lastEvent={x:event.clientX,y:event.clientY};
-      if(!frame)frame=requestAnimationFrame(render);
+    watch.addEventListener('pointerover',event=>{
+      if(!desktop.matches||reduced.matches){reset();return;}
+      const el=event.target.closest('.kinetic-type');
+      if(el===active)return;
+      if(active)active.classList.remove('kinetic-active');
+      active=el&&watch.contains(el)?el:null;
+      if(active)active.classList.add('kinetic-active');
+    });
+    watch.addEventListener('pointermove',event=>{
+      if(!desktop.matches||reduced.matches||!active)return;
+      if(raf)cancelAnimationFrame(raf);
+      const x=event.clientX,y=event.clientY;
+      raf=requestAnimationFrame(()=>{
+        raf=0;
+        if(!active)return;
+        const letters=active.querySelectorAll('.kinetic-letter');
+        if(letters.length){
+          for(const letter of letters){
+            const rect=letter.getBoundingClientRect();
+            const dx=x-(rect.left+rect.width/2),dy=y-(rect.top+rect.height/2);
+            const dist=Math.hypot(dx,dy),proximity=Math.max(0,1-dist/85);
+            letter.style.setProperty('--letter-x',`${Math.max(-3,Math.min(3,dx*.035))*proximity}px`);
+            letter.style.setProperty('--letter-y',`${-9*proximity}px`);
+            letter.style.setProperty('--letter-scale',`${1+.15*proximity}`);
+            letter.style.setProperty('--letter-glow',`${16*proximity}px`);
+          }
+        }
+      });
     },{passive:true});
-    document.addEventListener('pointerleave',clear);
-    window.addEventListener('blur',clear);
-    desktop.addEventListener('change',clear);
-    reduced.addEventListener('change',clear);
-    document.addEventListener('visibilitychange',()=>{if(document.hidden)clear();});
+    watch.addEventListener('pointerout',event=>{
+      if(event.relatedTarget&&event.relatedTarget.closest('.kinetic-type')===active)return;
+      if(active&&active.contains(event.relatedTarget))return;
+      if(active){
+        active.classList.remove('kinetic-active');
+        active.querySelectorAll('.kinetic-letter').forEach(letter=>{
+          for(const key of ['--letter-x','--letter-y','--letter-scale','--letter-glow'])letter.style.removeProperty(key);
+        });
+        active=null;
+      }
+    });
+    watch.addEventListener('pointerleave',reset);
+    desktop.addEventListener('change',reset);
+    reduced.addEventListener('change',reset);
   }
   function init(){
     restore();makeOptions();connectUI();reflect();startClock();scheduleDhikr();configureInstall();setupCinematicPointer();
