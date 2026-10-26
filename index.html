@@ -87,18 +87,18 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
 
 /* Desktop cinematic lighting: clearly visible, mouse-driven, non-obstructive. */
 @media(min-width:781px) and (prefers-reduced-motion:no-preference){
- body.cinema-enabled:not([data-quiet=true]) .watch>section{
+ body.cinema-enabled .watch>section{
   transform:perspective(900px) rotateX(var(--cinema-rx,0deg)) rotateY(var(--cinema-ry,0deg)) translate3d(var(--cinema-x,0px),var(--cinema-y,0px),0);
   transition:transform .18s ease-out,border-color .3s ease,box-shadow .3s ease;
   transform-style:preserve-3d;
   will-change:transform;
  }
- body.cinema-enabled:not([data-quiet=true]) .watch>section::after{
+ body.cinema-enabled .watch>section::after{
   content:"";position:absolute;inset:0;z-index:4;border-radius:inherit;pointer-events:none;
   background:radial-gradient(circle 340px at var(--light-x,50%) var(--light-y,50%),color-mix(in srgb,var(--accent) 27%,transparent),transparent 80%);
   opacity:var(--light-opacity,0);transition:opacity .28s ease;
  }
- body.cinema-enabled:not([data-quiet=true]) .watch>section:hover{
+ body.cinema-enabled .watch>section:hover{
   border-color:color-mix(in srgb,var(--accent) 56%,transparent);
   box-shadow:0 26px 75px #0007,0 0 48px var(--glow),inset 0 1px #ffffff20;
  }
@@ -109,13 +109,17 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
   transform:translate3d(-1000px,-1000px,0);
   transition:opacity .3s ease;will-change:transform;
  }
- body.cinema-enabled:not([data-quiet=true]) .cinema-cursor-glow{opacity:.85}
+ body.cinema-enabled .cinema-cursor-glow{opacity:.85}
 }
 @media(max-width:780px){
  .dhikr-text{will-change:auto;opacity:1!important;filter:none!important}
  .dhikr-touch{overflow:visible}
 }
 
+
+/* Applies to all four faces, including changing numerals and countdown. */
+.clock-time,.clock-time *, .remaining,.target-circle,.work-head strong,.clock-footer,.dhikr-index{user-select:none!important;-webkit-user-select:none!important;-webkit-touch-callout:none}
+@media(min-width:781px) and (prefers-reduced-motion:no-preference){body.cinema-enabled .cinema-cursor-glow{opacity:1!important}}
 </style>
   
 </head>
@@ -197,12 +201,13 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
         <button class="font-option" type="button" data-font="mono" aria-pressed="false"><b style="font-family:'IBM Plex Mono';font-size:16px">08:28</b><span>Mono</span></button>
       </div>
     </section>
+    <section class="setting-section"><div class="section-title"><strong>حجم ارقام الساعة</strong><small id="clockTimeScale">100%</small></div><input type="range" id="clockSizeSlider" min="75" max="125" step="5" value="100" aria-label="تكبير وتصغير ارقام الساعة" style="width:100%;accent-color:var(--accent)"><p class="setting-note">ينطبق على التصاميم الاربعة</p></section>
     <section class="setting-section"><div class="section-title"><strong>موعد نهاية الدوام</strong><small>TARGET TIME</small></div>
       <div class="time-picker" dir="ltr"><label><span>الساعة</span><select id="targetH" aria-label="ساعة نهاية الدوام"></select></label><label><span>الدقائق</span><select id="targetM" aria-label="دقائق نهاية الدوام"></select></label><label><span>الفترة</span><select id="targetAP" aria-label="الفترة"><option value="AM">AM</option><option value="PM">PM</option></select></label></div>
       <p class="setting-note">الدوام 9 ساعات ثابتة، والنسبة المتبقية تنخفض كل ثانية</p>
     </section>
     <section class="setting-section"><div class="section-title"><strong>تغيير الذكر كل</strong><small>INTERVAL</small></div><div class="intervals" id="intervals"><button type="button" data-interval="8">8s</button><button type="button" data-interval="12" class="selected">12s</button><button type="button" data-interval="20">20s</button><button type="button" data-interval="30">30s</button></div></section>
-    <section class="setting-section switches"><div class="switch-row"><div><b>تنسيق 24 ساعة</b><small>بدلا من AM / PM</small></div><button id="formatToggle" type="button" class="switch" role="switch" aria-label="تنسيق 24 ساعة" aria-checked="false"></button></div><div class="switch-row"><div><b>وضع AMOLED الهادئ</b><small>تقليل الحركة عند التشغيل الطويل</small></div><button id="quietToggle" type="button" class="switch" role="switch" aria-label="الوضع الهادئ" aria-checked="false"></button></div><div class="switch-row"><div><b>ابقاء الشاشة مستيقظة</b><small id="wakeCaption">حسب دعم المتصفح</small></div><button id="wakeToggle" type="button" class="switch" role="switch" aria-label="ابقاء الشاشة مستيقظة" aria-checked="false"></button></div></section>
+    <section class="setting-section switches"><div class="switch-row"><div><b>صوت تكات الساعة</b><small>صوت هادئ كل ثانية، يعمل بعد تفعيله</small></div><button id="tickToggle" type="button" class="switch" role="switch" aria-label="صوت تكات الساعة" aria-checked="false"></button></div><div class="switch-row"><div><b>تنسيق 24 ساعة</b><small>بدلا من AM / PM</small></div><button id="formatToggle" type="button" class="switch" role="switch" aria-label="تنسيق 24 ساعة" aria-checked="false"></button></div><div class="switch-row"><div><b>وضع AMOLED الهادئ</b><small>تقليل الحركة عند التشغيل الطويل</small></div><button id="quietToggle" type="button" class="switch" role="switch" aria-label="الوضع الهادئ" aria-checked="false"></button></div><div class="switch-row"><div><b>ابقاء الشاشة مستيقظة</b><small id="wakeCaption">حسب دعم المتصفح</small></div><button id="wakeToggle" type="button" class="switch" role="switch" aria-label="ابقاء الشاشة مستيقظة" aria-checked="false"></button></div></section>
     <div class="settings-actions"><button type="button" id="settingsFull" class="main-btn">ملء الشاشة</button><button type="button" id="installButton" class="other-btn">تثبيت التطبيق</button><button type="button" id="resetButton" class="text-btn">استعادة الافتراضي</button></div>
     <p class="last-note">الوقت حسب ساعة جهازك. جميع الاعدادات تحفظ على هذا الجهاز تلقائيا.</p>
   </aside>
@@ -236,7 +241,7 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
     'اللهم صل وسلم على نبينا محمد',
     'حسبي الله ونعم الوكيل'
   ]);
-  const DEFAULT = Object.freeze({style:'chatgpt',font:'outfit',targetHour:17,targetMinute:0,interval:12,format24:false,quiet:false});
+  const DEFAULT = Object.freeze({style:'chatgpt',font:'outfit',targetHour:17,targetMinute:0,interval:12,format24:false,quiet:false,tickSound:false,clockScale:100});
   const settings = {...DEFAULT};
   const motionPreference = matchMedia('(prefers-reduced-motion: reduce)');
   const responsive = matchMedia('(max-width:780px)');
@@ -253,6 +258,21 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
   let lastFocused = null;
   let previousDate = '';
   let installedDismissed = false;
+  let audioContext=null;
+  let lastTickSecond=-1;
+  async function unlockAudio(){
+    const AudioCtor=window.AudioContext||window.webkitAudioContext;
+    if(!AudioCtor)return false;
+    try{audioContext ||= new AudioCtor();await audioContext.resume();return audioContext.state==='running';}catch(_){return false;}
+  }
+  function playTick(){
+    if(!settings.tickSound||!audioContext||audioContext.state!=='running'||document.hidden)return;
+    const t=audioContext.currentTime;
+    const osc=audioContext.createOscillator(),volume=audioContext.createGain();
+    osc.type='sine';osc.frequency.setValueAtTime(860,t);osc.frequency.exponentialRampToValueAtTime(570,t+.026);
+    volume.gain.setValueAtTime(.0001,t);volume.gain.exponentialRampToValueAtTime(.018,t+.004);volume.gain.exponentialRampToValueAtTime(.0001,t+.055);
+    osc.connect(volume);volume.connect(audioContext.destination);osc.start(t);osc.stop(t+.06);
+  }
 
   function safeRead(key) {
     try {const content=localStorage.getItem(key);return content?JSON.parse(content):null;}catch(_){return null;}
@@ -268,6 +288,8 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
     settings.interval = DURATIONS.includes(prior.interval) ? prior.interval : DEFAULT.interval;
     settings.format24 = prior.format24===true;
     settings.quiet = prior.quiet===true;
+    settings.tickSound = prior.tickSound===true;
+    settings.clockScale = Number.isFinite(Number(prior.clockScale))?Math.max(75,Math.min(125,Number(prior.clockScale))):100;
   }
   function persist(){try{localStorage.setItem(STORE,JSON.stringify(settings));}catch(_){}}
   function toast(message){
@@ -290,6 +312,8 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
   }
   function updateClock(){
     const now=new Date(), parts=timeComponents(now);
+    const secondKey=Math.floor(now.getTime()/1000);
+    if(lastTickSecond!==secondKey){if(lastTickSecond!==-1)playTick();lastTickSecond=secondKey;}
     animateValue('hour',parts.hour);animateValue('minute',parts.minute);animateValue('second',parts.second);
     $('period').textContent=settings.format24?'24H':(now.getHours()<12?'AM':'PM');
     $('timeContainer').setAttribute('aria-label',`الساعة ${parts.hour}:${parts.minute}:${parts.second}`);
@@ -367,6 +391,11 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
     document.body.dataset.style=settings.style;
     document.body.dataset.font=settings.font;
     document.body.dataset.quiet=String(settings.quiet);
+    $('clockTimeScale').textContent=`${settings.clockScale}%`;
+    $('clockSizeSlider').value=String(settings.clockScale);
+    document.querySelector('.clock-time').style.zoom=String(settings.clockScale/100);
+    $('tickToggle').classList.toggle('active',settings.tickSound);
+    $('tickToggle').setAttribute('aria-checked',String(settings.tickSound));
     const style=STYLES[settings.style];
     $('designLabel').textContent=`${style.name.toUpperCase()} EDITION`;
     $('clockIndex').textContent=style.index;
@@ -465,6 +494,15 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
     for(const id of ['targetH','targetM','targetAP'])$(id).addEventListener('change',updateTarget);
     $('formatToggle').addEventListener('click',()=>{settings.format24=!settings.format24;reflect();});
     $('quietToggle').addEventListener('click',()=>{settings.quiet=!settings.quiet;reflect();});
+    $('clockSizeSlider').addEventListener('input',event=>{settings.clockScale=Number(event.target.value);reflect();});
+    $('tickToggle').addEventListener('click',async()=>{
+      if(!settings.tickSound){
+        const ready=await unlockAudio();
+        if(!ready){toast('الصوت غير مدعوم او محظور من المتصفح');return;}
+      }
+      settings.tickSound=!settings.tickSound;reflect();
+      if(settings.tickSound)playTick();
+    });
     $('wakeToggle').addEventListener('click',toggleWake);
     $('resetButton').addEventListener('click',()=>{Object.assign(settings,DEFAULT);reflect();scheduleDhikr();toast('تمت استعادة الإعدادات الافتراضية');});
     document.addEventListener('keydown',(event)=>{
@@ -508,11 +546,11 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
     };
     const render=()=>{
       frame=0;
-      if(!lastEvent||!desktop.matches||reduced.matches||settings.quiet)return clear();
+      if(!lastEvent||!desktop.matches||reduced.matches)return clear();
       const {x,y}=lastEvent;
       glow.style.transform=`translate3d(${x-280}px,${y-280}px,0)`;
       const target=document.elementFromPoint(x,y);
-      const panel=target?.closest('.watch > section')||null;
+      const panel=panels.find(node=>node===target||node.contains(target))||null;
       if(active&&active!==panel){
         for(const key of ['--cinema-rx','--cinema-ry','--cinema-x','--cinema-y'])active.style.removeProperty(key);
         active.style.setProperty('--light-opacity','0');
@@ -532,7 +570,7 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
       }
     };
     document.addEventListener('pointermove',event=>{
-      if(event.pointerType!=='mouse'||!desktop.matches||reduced.matches||settings.quiet){clear();return;}
+      if(event.pointerType!=='mouse'||!desktop.matches||reduced.matches){clear();return;}
       document.body.classList.add('cinema-enabled');
       lastEvent={x:event.clientX,y:event.clientY};
       if(!frame)frame=requestAnimationFrame(render);
