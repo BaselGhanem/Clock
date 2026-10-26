@@ -543,6 +543,9 @@ body[data-style=deepseek] .clock-content{gap:clamp(64px,7.5vh,88px)}
       if(el.id&&dynamic.has(el.id))continue;
       if(el.children.length||!el.textContent.trim()||el.textContent.length>65)continue;
       const str=el.textContent;
+      // Arabic is cursive: splitting individual characters breaks joining and bidi layout.
+      // Keep each Arabic phrase as one text node; the parent gets the premium hover effect.
+      if(/[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/u.test(str))continue;
       const frag=document.createDocumentFragment();
       for(const char of str){
         const span=document.createElement('span');
